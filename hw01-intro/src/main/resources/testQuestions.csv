@@ -1,0 +1,6 @@
+text,type,parameter1
+What is your name?, freeformat, enter your name
+What courses do you want?, freeformat, spring java microservices
+Why did you applied for courses?, freeformat, enter your purposes
+What would you like to get from courses?, freeformat, enter your expectations
+Any comments?, freeformat, Other things on your mind
