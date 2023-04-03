@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
     <!-- bean definitions here -->
     <bean id="questionMapper" class="ru.otus.mapper.QuestionMapperCsv"/>
     <bean id="questionDao" class="ru.otus.dao.imp.QuestionDaoCSV">
-        <property name="questionMapperCsv" ref="questionMapper"/>
-        <property name="fileName" value="testQuestions.csv"/>
+        <constructor-arg index="0" ref="questionMapper"/>
+        <constructor-arg index="1" value="testQuestions.csv"/>
+    </bean>
+
+    <util:constant id = "SYSTEMOUT" static-field="java.lang.System.out"/>
+
+    <bean id="outputService" class="ru.otus.service.imp.OutputServiceImp">
+        <constructor-arg index="0" ref="SYSTEMOUT"/>
     </bean>
     <bean id="questionService" class="ru.otus.service.imp.QuestionServiceImp">
-            <constructor-arg ref="questionDao"/>
+        <constructor-arg index="0" ref="questionDao"/>
+        <constructor-arg index="1" ref="outputService"/>
     </bean>
 </beans>
