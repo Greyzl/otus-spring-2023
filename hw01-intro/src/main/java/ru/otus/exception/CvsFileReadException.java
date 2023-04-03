@@ -1,4 +1,4 @@
-package ru.otus.exception.csv;
+package ru.otus.exception;
 
 public class CvsFileReadException extends RuntimeException {
 

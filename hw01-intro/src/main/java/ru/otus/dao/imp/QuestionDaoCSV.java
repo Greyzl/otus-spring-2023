@@ -5,7 +5,7 @@ import org.springframework.core.io.ClassPathResource;
 import ru.otus.dao.QueationDao;
 import ru.otus.entity.Question;
 import ru.otus.entity.csv.QuestionCsv;
-import ru.otus.exception.csv.CvsFileReadException;
+import ru.otus.exception.CvsFileReadException;
 import ru.otus.mapper.QuestionMapperCsv;
 
 import java.io.IOException;
