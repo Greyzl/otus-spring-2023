@@ -1,6 +1,7 @@
-text,parameter1
-What is your name?, enter your name
-What courses do you want?, spring java microservices
-Why did you applied for courses?, enter your purposes
-What would you like to get from courses?, enter your expectations
-Any comments?, Other things on your mind
+text,answer_option_1,answer_option_2,answer_option_3
+What is your name?,,,
+What is S in SOLID?,Software technics,System requirements,Single responsibility
+What is O in SOLID?,Object oriented,Open-Close,On preise
+What is L in SOLID?,Lightweight,Liskov,latent
+What is I in SOLID?,Inversion of control,Injection,Interface segregation
+What is D in SOLID?,Devided,Development,Dependency inversion

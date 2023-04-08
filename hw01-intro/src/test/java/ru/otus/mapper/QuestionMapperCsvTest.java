@@ -16,13 +16,13 @@ class QuestionMapperCsvTest {
     void test_mapQuestion_whiteSpaces() {
         QuestionCsv questionCsv_whiteSpaces = new QuestionCsv();
         questionCsv_whiteSpaces.setText(" Testing question  ");
-        MultiValuedMap<String, String> testArgs = new HashSetValuedHashMap<>();
-        testArgs.put(" parameter1", " placegolder  ");
-        questionCsv_whiteSpaces.setArgs(testArgs);
+        MultiValuedMap<String, String> testAnswerOptions = new HashSetValuedHashMap<>();
+        testAnswerOptions.put(" parameter1", " placegolder  ");
+        questionCsv_whiteSpaces.setAnswerOptions(testAnswerOptions);
 
         Question question = mapperCsv.mapQuestion(questionCsv_whiteSpaces);
 
         assertEquals("Testing question", question.getText());
-        assertEquals("placegolder", question.getPrompt());
+        assertEquals("placegolder", question.getAnswerOptions().get(0));
     }
 }

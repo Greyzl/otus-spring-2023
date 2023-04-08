@@ -1,25 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="
-        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!-- bean definitions here -->
     <bean id="questionMapper" class="ru.otus.mapper.QuestionMapperCsv"/>
+
     <bean id="questionDao" class="ru.otus.dao.imp.QuestionDaoCSV">
         <constructor-arg index="0" ref="questionMapper"/>
         <constructor-arg index="1" value="testQuestions.csv"/>
     </bean>
 
-    <util:constant id = "SYSTEMOUT" static-field="java.lang.System.out"/>
-
-    <bean id="outputService" class="ru.otus.service.imp.OutputServiceImp">
-        <constructor-arg index="0" ref="SYSTEMOUT"/>
-    </bean>
     <bean id="questionService" class="ru.otus.service.imp.QuestionServiceImp">
         <constructor-arg index="0" ref="questionDao"/>
-        <constructor-arg index="1" ref="outputService"/>
     </bean>
+
+    <bean id="outputService" class="ru.otus.service.imp.ConsoleOutputService"/>
+
+    <bean id="questionFormatter" class="ru.otus.formatter.imp.ConsoleQuestionOutputFormatter"/>
+
+    <bean id="testProcessor" class="ru.otus.processor.imp.PrintQuestionsProcessor">
+        <constructor-arg index="0" ref="questionService"/>
+        <constructor-arg index="1" ref="questionFormatter"/>
+        <constructor-arg index="2" ref="outputService"/>
+    </bean>
+
+    <bean id="applicationRunner" class="ru.otus.service.ApplicationRunner">
+        <constructor-arg index="0" ref="testProcessor"/>
+    </bean>
+
 </beans>

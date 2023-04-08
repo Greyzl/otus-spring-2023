@@ -3,18 +3,18 @@ package ru.otus.entity.csv;
 import com.opencsv.bean.CsvBindAndJoinByName;
 import com.opencsv.bean.CsvBindByName;
 import org.apache.commons.collections4.MultiValuedMap;
-import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import java.util.List;
 
 public class QuestionCsv {
-    @CsvBindByName(column = "text")
+    @CsvBindByName(column = "text", required = true)
     private String text;
 
 
-    @CsvBindAndJoinByName(column = "parameter[0-9]+", elementType = String.class,
-            mapType = HashSetValuedHashMap.class, required = true)
-    private MultiValuedMap<String, String> args;
+    @CsvBindAndJoinByName(column = "answer_option_[0-9]+", elementType = String.class,
+            mapType = ArrayListValuedHashMap.class)
+    private MultiValuedMap<String, String> answerOptions;
 
     public String getText() {
         return text;
@@ -24,12 +24,13 @@ public class QuestionCsv {
         this.text = text;
     }
 
-    public void setArgs(MultiValuedMap<String, String> args) {
-        this.args = args;
+    public void setAnswerOptions(MultiValuedMap<String, String> answerOptions) {
+        this.answerOptions = answerOptions;
     }
 
-    public List<String> getQuestionVariants(){
-        return args.values().stream().toList();
+    public List<String> getAnswerOptionsList(){
+
+        return answerOptions.values().stream().toList();
     }
 
 }

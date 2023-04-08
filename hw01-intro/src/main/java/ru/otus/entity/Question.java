@@ -1,30 +1,22 @@
 package ru.otus.entity;
 
+import java.util.List;
 
 public class Question {
-    private String text;
+    private final String text;
 
-    private String prompt;
+    private final List<String> answerOptions;
+
+    public Question(String text, List<String> answerOptions){
+        this.text = text;
+        this.answerOptions = answerOptions;
+    }
 
     public String getText() {
         return text;
     }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public String getPrompt() {
-        return prompt;
-    }
-
-    public void setPrompt(String prompt) {
-        this.prompt = prompt;
-    }
-
-    @Override
-    public String toString() {
-
-        return getText() + " " + getPrompt();
+    public List<String> getAnswerOptions(){
+        return answerOptions;
     }
 }
