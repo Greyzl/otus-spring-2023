@@ -11,7 +11,8 @@ public class QuestionCsv {
     @CsvBindByName(column = "text", required = true)
     private String text;
 
-
+    @CsvBindByName(column = "right_answer", required = true)
+    private String rightAnswer;
     @CsvBindAndJoinByName(column = "answer_option_[0-9]+", elementType = String.class,
             mapType = ArrayListValuedHashMap.class)
     private MultiValuedMap<String, String> answerOptions;
@@ -22,6 +23,14 @@ public class QuestionCsv {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getRightAnswer() {
+        return rightAnswer;
+    }
+
+    public void setRightAnswer(String rightAnswer) {
+        this.rightAnswer = rightAnswer;
     }
 
     public void setAnswerOptions(MultiValuedMap<String, String> answerOptions) {

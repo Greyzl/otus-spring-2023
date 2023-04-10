@@ -16,6 +16,7 @@ class QuestionMapperCsvTest {
     void test_mapQuestion_whiteSpaces() {
         QuestionCsv questionCsv_whiteSpaces = new QuestionCsv();
         questionCsv_whiteSpaces.setText(" Testing question  ");
+        questionCsv_whiteSpaces.setRightAnswer("placegolder     ");
         MultiValuedMap<String, String> testAnswerOptions = new HashSetValuedHashMap<>();
         testAnswerOptions.put(" parameter1", " placegolder  ");
         questionCsv_whiteSpaces.setAnswerOptions(testAnswerOptions);
@@ -24,5 +25,6 @@ class QuestionMapperCsvTest {
 
         assertEquals("Testing question", question.getText());
         assertEquals("placegolder", question.getAnswerOptions().get(0));
+        assertEquals("placegolder", question.getRightAnswer());
     }
 }

@@ -20,6 +20,11 @@ public class QuestionMapperCsv {
             }
             answerOptions.add(answerOption.trim());
         }
-        return new Question(questionText.trim(), answerOptions);
+        String rightAnswer = questionCsv.getRightAnswer().trim();
+        if (!answerOptions.isEmpty() && rightAnswer.isEmpty()){
+            throw new QuestionMapException("Right answer is empty");
+        }
+        return new Question(questionText.trim(),rightAnswer, answerOptions);
     }
+
 }
