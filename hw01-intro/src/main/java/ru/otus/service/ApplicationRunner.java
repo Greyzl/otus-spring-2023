@@ -1,12 +1,12 @@
 package ru.otus.service;
 
-import ru.otus.processor.Processor;
+import ru.otus.processor.TestProcessor;
 
 public class ApplicationRunner {
 
-    private final Processor processor;
+    private final TestProcessor processor;
 
-    public ApplicationRunner (Processor processor){
+    public ApplicationRunner (TestProcessor processor){
         this.processor = processor;
     }
 

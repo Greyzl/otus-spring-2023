@@ -7,23 +7,26 @@
     <!-- bean definitions here -->
     <bean id="questionMapper" class="ru.otus.mapper.QuestionMapperCsv"/>
 
-    <bean id="questionDao" class="ru.otus.dao.imp.QuestionDaoCSV">
+    <bean id="questionDao" class="ru.otus.dao.impl.QuestionDaoCSV">
         <constructor-arg index="0" ref="questionMapper"/>
         <constructor-arg index="1" value="testQuestions.csv"/>
     </bean>
 
-    <bean id="questionService" class="ru.otus.service.imp.QuestionServiceImp">
+    <bean id="questionService" class="ru.otus.service.impl.QuestionServiceImpl">
         <constructor-arg index="0" ref="questionDao"/>
     </bean>
 
-    <bean id="outputService" class="ru.otus.service.imp.ConsoleOutputService"/>
+    <bean id="userQuestionService" class="ru.otus.service.impl.UserQuestionServiceImpl"/>
 
-    <bean id="questionFormatter" class="ru.otus.formatter.imp.ConsoleQuestionOutputFormatter"/>
+    <bean id="outputService" class="ru.otus.service.impl.ConsoleOutputService"/>
 
-    <bean id="testProcessor" class="ru.otus.processor.imp.PrintQuestionsProcessor">
+    <bean id="questionFormatter" class="ru.otus.formatter.impl.ConsoleQuestionOutputFormatter"/>
+
+    <bean id="testProcessor" class="ru.otus.processor.impl.PrintTestQuestionsProcessor">
         <constructor-arg index="0" ref="questionService"/>
-        <constructor-arg index="1" ref="questionFormatter"/>
-        <constructor-arg index="2" ref="outputService"/>
+        <constructor-arg index="1" ref="userQuestionService"/>
+        <constructor-arg index="2" ref="questionFormatter"/>
+        <constructor-arg index="3" ref="outputService"/>
     </bean>
 
     <bean id="applicationRunner" class="ru.otus.service.ApplicationRunner">

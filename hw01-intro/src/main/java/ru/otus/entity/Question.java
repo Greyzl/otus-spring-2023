@@ -1,11 +1,17 @@
 package ru.otus.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Question {
     private final String text;
 
     private final List<String> answerOptions;
+
+    public Question(String text){
+        this.text = text;
+        answerOptions = new ArrayList<>();
+    }
 
     public Question(String text, List<String> answerOptions){
         this.text = text;

@@ -1,4 +1,4 @@
-package ru.otus.service.imp;
+package ru.otus.service.impl;
 
 import ru.otus.service.OutputService;
 

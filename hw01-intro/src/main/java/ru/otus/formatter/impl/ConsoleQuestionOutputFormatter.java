@@ -1,4 +1,4 @@
-package ru.otus.formatter.imp;
+package ru.otus.formatter.impl;
 
 import ru.otus.entity.Question;
 import ru.otus.formatter.QuestionOutputFormatter;
