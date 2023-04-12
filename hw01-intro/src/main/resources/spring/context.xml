@@ -16,16 +16,18 @@
         <constructor-arg index="0" ref="questionDao"/>
     </bean>
 
-    <bean id="userQuestionService" class="ru.otus.service.impl.UserQuestionServiceImpl"/>
-
     <bean id="outputService" class="ru.otus.service.impl.ConsoleOutputService"/>
 
     <bean id="questionFormatter" class="ru.otus.formatter.impl.ConsoleQuestionOutputFormatter"/>
 
+    <bean id="userService" class="ru.otus.service.impl.UserServiceImpl">
+        <constructor-arg index="0" ref="outputService"/>
+    </bean>
+
     <bean id="testProcessor" class="ru.otus.processor.impl.PrintTestQuestionsProcessor">
         <constructor-arg index="0" ref="questionService"/>
-        <constructor-arg index="1" ref="userQuestionService"/>
-        <constructor-arg index="2" ref="questionFormatter"/>
+        <constructor-arg index="1" ref="questionFormatter"/>
+        <constructor-arg index="2" ref="userService"/>
         <constructor-arg index="3" ref="outputService"/>
     </bean>
 

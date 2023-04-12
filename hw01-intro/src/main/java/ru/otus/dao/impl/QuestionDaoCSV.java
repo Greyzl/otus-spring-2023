@@ -7,6 +7,7 @@ import ru.otus.dao.QueationDao;
 import ru.otus.entity.Question;
 import ru.otus.entity.csv.QuestionCsv;
 import ru.otus.exception.LoadQuestionsException;
+import ru.otus.exception.QuestionMapException;
 import ru.otus.mapper.QuestionMapperCsv;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ public class QuestionDaoCSV implements QueationDao {
                     .parse();
             questionsCsv.forEach(questionCsv ->
                     questions.add(questionMapperCsv.mapQuestion(questionCsv)));
-        } catch (IllegalStateException | IOException  e){
+        } catch (IllegalStateException | IOException | QuestionMapException e){
             throw new LoadQuestionsException(e);
         }
         return questions;
