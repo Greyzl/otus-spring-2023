@@ -11,7 +11,7 @@ public class QuestionCsv {
     @CsvBindByName(column = "text", required = true)
     private String text;
 
-    @CsvBindByName(column = "right_answer", required = true)
+    @CsvBindByName(column = "right_option", required = true)
     private String rightAnswer;
 
     @CsvBindAndJoinByName(column = "answer_option_[0-9]+", elementType = String.class,

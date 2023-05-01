@@ -8,9 +8,12 @@ public class Answer {
 
     private final String text;
 
-    public Answer(int position, String text){
+    private final boolean isRight;
+
+    public Answer(int position, String text, boolean isRight){
         this.position = position;
         this.text = text;
+        this.isRight = isRight;
     }
 
     public int getPosition(){
@@ -20,6 +23,10 @@ public class Answer {
 
     public String getText() {
         return text;
+    }
+
+    public boolean getIsRight(){
+        return isRight;
     }
 
     @Override

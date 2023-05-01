@@ -7,7 +7,6 @@ import ru.otus.exception.QuestionMapException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class QuestionMapperCsv {
 
@@ -22,11 +21,10 @@ public class QuestionMapperCsv {
         }
         List<String> answerOptionTexts = questionCsv.getAnswerOptionsList();
         List<Answer> answerOptions = mapAnswerOptions(answerOptionTexts);
-        Optional<Answer> mayBeRightAnswer = findRightAnswer(rightAnswerTextTrimmed,answerOptions);
-        if (mayBeRightAnswer.isEmpty()){
-            throw new QuestionMapException("There is no right answer in answer options");
-        }
-        return new Question(questionText.trim(), mayBeRightAnswer.get(), answerOptions);
+        int newPosition = answerOptions.size() + 1;
+        Answer rightAnswer = new Answer(newPosition, rightAnswerTextTrimmed,true);
+        answerOptions.add(rightAnswer);
+        return new Question(questionText.trim(), rightAnswer, answerOptions);
     }
 
     private List<Answer> mapAnswerOptions(List<String> answerOptionTexts){
@@ -38,14 +36,9 @@ public class QuestionMapperCsv {
             if (answerOptionTextTrimmed.isEmpty()){
                 continue;
             }
-            Answer answerOption = new Answer(position, answerOptionTextTrimmed);
+            Answer answerOption = new Answer(position, answerOptionTextTrimmed, false);
             answerOptions.add(answerOption);
         }
         return answerOptions;
     }
-
-    private Optional<Answer> findRightAnswer(String rightAnswerText, List<Answer> answerOptions){
-        return answerOptions.stream().filter(answer -> answer.getText().equals(rightAnswerText)).findFirst();
-    }
-
 }

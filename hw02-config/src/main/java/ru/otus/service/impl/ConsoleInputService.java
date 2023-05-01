@@ -1,14 +1,17 @@
 package ru.otus.service.impl;
 
-import org.springframework.stereotype.Component;
 import ru.otus.service.InputService;
 
+import java.io.InputStream;
 import java.util.Scanner;
 
-@Component
 public class ConsoleInputService implements InputService {
 
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
+
+    public ConsoleInputService(InputStream inputStream){
+        this.scanner = new Scanner(inputStream);
+    }
 
     @Override
     public String read() {

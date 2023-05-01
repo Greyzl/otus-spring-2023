@@ -35,10 +35,7 @@ public class UserAnswerServiceImpl implements UserAnswerService {
                 int userAnswer = Integer.parseInt(userAnswerText);
                 Optional<Answer> mayBeAnswer = answerOptions.stream()
                         .filter(answer -> answer.getPosition() == userAnswer).findFirst();
-                if (mayBeAnswer.isEmpty()){
-                    throw new AnswerNotFoundException();
-                }
-                return mayBeAnswer.get();
+                return mayBeAnswer.orElseThrow(AnswerNotFoundException::new);
             } catch (Exception e){
                 outputService.output(OPTION_ANSWER_NOT_EXIST);
             }

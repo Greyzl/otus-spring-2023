@@ -1,16 +1,15 @@
 package ru.otus.service.impl;
 
-import org.springframework.stereotype.Service;
 import ru.otus.service.OutputService;
 
 import java.io.PrintStream;
 
-@Service
 public class ConsoleOutputService implements OutputService {
 
-    private final PrintStream printStream = System.out;
+    private final PrintStream printStream;
 
-    public ConsoleOutputService(){
+    public ConsoleOutputService(PrintStream printStream){
+        this.printStream = printStream;
     }
 
     @Override
