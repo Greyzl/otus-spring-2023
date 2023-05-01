@@ -1,9 +1,8 @@
 package ru.otus.service;
 
 import ru.otus.entity.Answer;
-
-import java.util.List;
+import ru.otus.entity.Question;
 
 public interface UserAnswerService {
-    Answer getUserAnswer(List<Answer> answerOptions);
+    Answer getUserAnswer(Question question);
 }

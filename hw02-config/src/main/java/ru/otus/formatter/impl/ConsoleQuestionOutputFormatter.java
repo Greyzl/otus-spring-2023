@@ -6,10 +6,12 @@ import ru.otus.entity.Question;
 import ru.otus.formatter.AnswerOutputFormatter;
 import ru.otus.formatter.QuestionOutputFormatter;
 
+import java.util.Map;
+
 @Component
 public class ConsoleQuestionOutputFormatter implements QuestionOutputFormatter {
 
-    private final AnswerOutputFormatter answerOutputFormatter;
+    private AnswerOutputFormatter answerOutputFormatter;
 
     public ConsoleQuestionOutputFormatter(AnswerOutputFormatter answerOutputFormatter){
         this.answerOutputFormatter = answerOutputFormatter;
@@ -20,11 +22,17 @@ public class ConsoleQuestionOutputFormatter implements QuestionOutputFormatter {
         StringBuilder builder = new StringBuilder(question.getText());
         if (!question.getAnswerOptions().isEmpty()) {
             builder.append("\n");
-            for (Answer answerOption: question.getAnswerOptions()){
-                String formattedAnswer = answerOutputFormatter.format(answerOption);
+            for (Map.Entry<Integer, Answer> answerOption: question.getAnswerOptions().entrySet()){
+                String formattedAnswer = entrySetAnswerOptionFormat(answerOption);
                 builder.append(formattedAnswer).append(" ");
             }
         }
         return builder.toString();
+    }
+
+    private String entrySetAnswerOptionFormat(Map.Entry<Integer, Answer> answerOption){
+        Answer answer = answerOption.getValue();
+        String answerFormatted = answerOutputFormatter.format(answer);
+        return String.format("%d. %s", answerOption.getKey(), answerFormatted);
     }
 }

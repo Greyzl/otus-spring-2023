@@ -4,22 +4,14 @@ import java.util.Objects;
 
 public class Answer {
 
-    private final int position;
-
     private final String text;
 
     private final boolean isRight;
 
-    public Answer(int position, String text, boolean isRight){
-        this.position = position;
+    public Answer(String text, boolean isRight){
         this.text = text;
         this.isRight = isRight;
     }
-
-    public int getPosition(){
-        return position;
-    }
-
 
     public String getText() {
         return text;

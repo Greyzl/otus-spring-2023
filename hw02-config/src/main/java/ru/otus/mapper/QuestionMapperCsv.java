@@ -21,22 +21,19 @@ public class QuestionMapperCsv {
         }
         List<String> answerOptionTexts = questionCsv.getAnswerOptionsList();
         List<Answer> answerOptions = mapAnswerOptions(answerOptionTexts);
-        int newPosition = answerOptions.size() + 1;
-        Answer rightAnswer = new Answer(newPosition, rightAnswerTextTrimmed,true);
+        Answer rightAnswer = new Answer(rightAnswerTextTrimmed,true);
         answerOptions.add(rightAnswer);
         return new Question(questionText.trim(), rightAnswer, answerOptions);
     }
 
     private List<Answer> mapAnswerOptions(List<String> answerOptionTexts){
         var answerOptions = new ArrayList<Answer>();
-        int position = 0;
         for (String answerOptionText: answerOptionTexts) {
             String answerOptionTextTrimmed = answerOptionText.trim();
-            position++;
             if (answerOptionTextTrimmed.isEmpty()){
                 continue;
             }
-            Answer answerOption = new Answer(position, answerOptionTextTrimmed, false);
+            Answer answerOption = new Answer(answerOptionTextTrimmed, false);
             answerOptions.add(answerOption);
         }
         return answerOptions;
