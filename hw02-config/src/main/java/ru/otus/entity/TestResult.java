@@ -32,7 +32,7 @@ public class TestResult {
     public void addAnswer(Question question, Answer answer){
         answers.put(question, answer);
         questionCount ++;
-        if (answer.equals(question.getRightAnswer())){
+        if (answer.getIsRight()){
             rightAnswers++;
         }
     }
