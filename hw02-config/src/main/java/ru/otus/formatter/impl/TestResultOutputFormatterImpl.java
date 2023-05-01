@@ -5,7 +5,7 @@ import ru.otus.entity.TestResult;
 import ru.otus.formatter.TestResultOutputFormatter;
 
 @Component
-public class ConsoleTestResultOutputFormatter implements TestResultOutputFormatter {
+public class TestResultOutputFormatterImpl implements TestResultOutputFormatter {
 
     @Override
     public String format(TestResult testResult) {

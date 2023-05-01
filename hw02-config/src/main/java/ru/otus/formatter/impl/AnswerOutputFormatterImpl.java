@@ -5,7 +5,7 @@ import ru.otus.entity.Answer;
 import ru.otus.formatter.AnswerOutputFormatter;
 
 @Component
-public class ConsoleAnswerOutputFormatter implements AnswerOutputFormatter {
+public class AnswerOutputFormatterImpl implements AnswerOutputFormatter {
 
     public String format(Answer answer){
         return answer.getText();

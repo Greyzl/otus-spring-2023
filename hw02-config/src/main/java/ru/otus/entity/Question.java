@@ -1,15 +1,15 @@
 package ru.otus.entity;
 
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Question {
     private final String text;
 
-    private final Map<Integer, Answer> answerOptions = new TreeMap<>();
+    private final Map<Integer, Answer> answerOptions;
 
     public Question(String text, Map<Integer, Answer> answerOptions){
         this.text = text;
+        this.answerOptions = answerOptions;
     }
 
     public String getText() {

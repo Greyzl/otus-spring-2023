@@ -17,7 +17,7 @@ public class QuestionFactory {
         Random random = new Random();
         List<Integer> integers = new ArrayList<>();
         for (int position = 0; position < answerList.size(); position++){
-            integers.add(position);
+            integers.add(position + 1);
         }
         for (Answer answer: answerList){
             int integersIndex = random.nextInt(integers.size());

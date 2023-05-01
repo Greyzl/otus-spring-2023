@@ -9,11 +9,11 @@ import ru.otus.formatter.QuestionOutputFormatter;
 import java.util.Map;
 
 @Component
-public class ConsoleQuestionOutputFormatter implements QuestionOutputFormatter {
+public class QuestionOutputFormatterImpl implements QuestionOutputFormatter {
 
-    private AnswerOutputFormatter answerOutputFormatter;
+    private final AnswerOutputFormatter answerOutputFormatter;
 
-    public ConsoleQuestionOutputFormatter(AnswerOutputFormatter answerOutputFormatter){
+    public QuestionOutputFormatterImpl(AnswerOutputFormatter answerOutputFormatter){
         this.answerOutputFormatter = answerOutputFormatter;
     }
 
