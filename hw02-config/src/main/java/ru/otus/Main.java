@@ -3,6 +3,7 @@ package ru.otus;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import ru.otus.config.AppConfig;
 import ru.otus.service.ApplicationRunner;
 
 public class Main {

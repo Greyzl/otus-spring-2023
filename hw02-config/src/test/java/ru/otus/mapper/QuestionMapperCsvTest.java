@@ -5,7 +5,7 @@ import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.junit.jupiter.api.Test;
 import ru.otus.entity.Answer;
 import ru.otus.entity.Question;
-import ru.otus.entity.csv.QuestionCsv;
+import ru.otus.dto.QuestionCsvDto;
 
 import java.util.Optional;
 
@@ -17,20 +17,20 @@ class QuestionMapperCsvTest {
 
     @Test
     void test_mapQuestion_whiteSpaces() {
-        QuestionCsv questionCsv_whiteSpaces = new QuestionCsv();
-        questionCsv_whiteSpaces.setText(" Testing question  ");
-        questionCsv_whiteSpaces.setRightAnswer("rightOption     ");
+        QuestionCsvDto questionCsv_Dto_whiteSpaces = new QuestionCsvDto();
+        questionCsv_Dto_whiteSpaces.setText(" Testing question  ");
+        questionCsv_Dto_whiteSpaces.setRightAnswer("rightOption     ");
         MultiValuedMap<String, String> testAnswerOptions = new HashSetValuedHashMap<>();
         testAnswerOptions.put(" parameter1", " wrongOption  ");
-        questionCsv_whiteSpaces.setAnswerOptions(testAnswerOptions);
+        questionCsv_Dto_whiteSpaces.setAnswerOptions(testAnswerOptions);
 
-        Question question = mapperCsv.mapQuestion(questionCsv_whiteSpaces);
+        Question question = mapperCsv.mapQuestion(questionCsv_Dto_whiteSpaces);
         assertEquals("Testing question", question.getText());
 
         Optional<Answer> mayBeRight = question.getAnswerOptions()
-                .values().stream().filter(Answer::getIsRight).findFirst();
+                .stream().filter(Answer::getIsRight).findFirst();
         Optional<Answer> mayBeWrong = question.getAnswerOptions()
-                .values().stream().filter(answer -> !answer.getIsRight()).findFirst();
+                .stream().filter(answer -> !answer.getIsRight()).findFirst();
 
         assertEquals("rightOption", mayBeRight.orElseThrow().getText());
         assertEquals("wrongOption", mayBeWrong.orElseThrow().getText());

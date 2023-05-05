@@ -1,13 +1,13 @@
 package ru.otus.entity;
 
-import java.util.Map;
+import java.util.List;
 
 public class Question {
     private final String text;
 
-    private final Map<Integer, Answer> answerOptions;
+    private final List<Answer> answerOptions;
 
-    public Question(String text, Map<Integer, Answer> answerOptions){
+    public Question(String text, List<Answer> answerOptions){
         this.text = text;
         this.answerOptions = answerOptions;
     }
@@ -16,11 +16,7 @@ public class Question {
         return text;
     }
 
-    public Map<Integer, Answer> getAnswerOptions(){
+    public List<Answer> getAnswerOptions(){
         return answerOptions;
-    }
-
-    public Answer getAnswer(int position){
-        return answerOptions.get(position);
     }
 }

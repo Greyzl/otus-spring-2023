@@ -1,4 +1,4 @@
-package ru.otus.entity.csv;
+package ru.otus.dto;
 
 import com.opencsv.bean.CsvBindAndJoinByName;
 import com.opencsv.bean.CsvBindByName;
@@ -7,7 +7,7 @@ import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import java.util.List;
 
-public class QuestionCsv {
+public class QuestionCsvDto {
     @CsvBindByName(column = "text", required = true)
     private String text;
 

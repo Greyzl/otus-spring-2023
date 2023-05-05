@@ -5,11 +5,11 @@ import ru.otus.service.InputService;
 import java.io.InputStream;
 import java.util.Scanner;
 
-public class ConsoleInputService implements InputService {
+public class InputStreamService implements InputService {
 
     private final Scanner scanner;
 
-    public ConsoleInputService(InputStream inputStream){
+    public InputStreamService(InputStream inputStream){
         this.scanner = new Scanner(inputStream);
     }
 
