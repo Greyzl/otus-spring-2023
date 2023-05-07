@@ -1,15 +1,20 @@
-package ru.otus.service;
+package ru.otus.controller;
 
-import org.springframework.stereotype.Component;
+import org.springframework.shell.standard.ShellComponent;
+import org.springframework.shell.standard.ShellMethod;
 import ru.otus.entity.Question;
 import ru.otus.entity.TestResult;
 import ru.otus.entity.User;
 import ru.otus.formatter.TestResultOutputFormatter;
+import ru.otus.service.OutputService;
+import ru.otus.service.QuestionService;
+import ru.otus.service.TestService;
+import ru.otus.service.UserService;
 
 import java.util.List;
 
-@Component
-public class ApplicationRunner {
+@ShellComponent
+public class TestController {
 
     private final OutputService outputService;
 
@@ -21,11 +26,11 @@ public class ApplicationRunner {
 
     private final UserService userService;
 
-    public ApplicationRunner(OutputService outputService,
-                             QuestionService questionService,
-                             TestService testService,
-                             TestResultOutputFormatter testResultOutputFormatter,
-                             UserService userService){
+    public TestController(OutputService outputService,
+                          QuestionService questionService,
+                          TestService testService,
+                          TestResultOutputFormatter testResultOutputFormatter,
+                          UserService userService){
         this.outputService = outputService;
         this.questionService = questionService;
         this.testService = testService;
@@ -33,11 +38,13 @@ public class ApplicationRunner {
         this.userService = userService;
     }
 
-    public void run(){
+    @ShellMethod
+    public String run(){
         User user = userService.getUser();
         List<Question> questions = questionService.getQuestions();
         TestResult testResult = testService.test(user, questions);
         String formattedResult = testResultOutputFormatter.format(testResult);
         outputService.output(formattedResult);
+        return "Good bye";
     }
 }
