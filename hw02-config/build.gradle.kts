@@ -14,12 +14,15 @@ val springVersion = "6.0.7"
 val openCsvVersion = "5.7.1"
 val junitVersion = "5.8.1"
 val apacheCommonsVersion = "3.12.0"
+val mockitoVersion = "5.3.1"
 
 dependencies {
     implementation("org.springframework:spring-context:${springVersion}")
     implementation("com.opencsv:opencsv:${openCsvVersion}")
     implementation("org.apache.commons:commons-lang3:${apacheCommonsVersion}")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+    testImplementation("org.mockito:mockito-core:${mockitoVersion}")
+    testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
 

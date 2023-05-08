@@ -1,6 +1,7 @@
 package ru.otus.service.impl;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import ru.otus.entity.Answer;
 import ru.otus.entity.Question;
 import ru.otus.entity.TestResult;
@@ -15,12 +16,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TestServiceImplTest {
 
+
     @Test
     void testRightAnswersResult() {
-        UserAnswerService userAnswerService = (question) ->
-                question.getAnswerOptions().stream().filter(Answer::getIsRight).findFirst().orElseThrow();
-        TestService testService = new TestServiceImpl(userAnswerService);
-
         List<Answer> answerOptions = new ArrayList<>();
         Answer answerTrue = new Answer("Test user answer 1", true);
         Answer answerFalse = new Answer("Test user answer 2", false);
@@ -33,6 +31,12 @@ class TestServiceImplTest {
 
         String userName = "Test user 1";
         User user = new User(userName);
+
+        UserAnswerService mockedService = Mockito.mock(UserAnswerService.class);
+        Mockito.when(mockedService.getUserAnswer(question)).thenReturn(answerTrue);
+
+        TestService testService = new TestServiceImpl(mockedService);
+
         TestResult result = testService.test(user, questions);
 
         assertEquals(1, result.getRightAnswers());
@@ -42,9 +46,6 @@ class TestServiceImplTest {
 
     @Test
     void testDifferentAnswersResult() {
-        UserAnswerService userAnswerService = (question) ->
-                question.getAnswerOptions().stream().findFirst().orElseThrow();
-        TestService testService = new TestServiceImpl(userAnswerService);
 
         List<Answer> answerOptions_1 = new ArrayList<>();
         Answer answerTrue_1 = new Answer("Test user answer 1", true);
@@ -68,6 +69,13 @@ class TestServiceImplTest {
 
         String userName = "Test user 2";
         User user = new User(userName);
+
+        UserAnswerService mockedUserAnswerService = Mockito.mock(UserAnswerService.class);
+        Mockito.when(mockedUserAnswerService.getUserAnswer(question_1)).thenReturn(answerTrue_1);
+        Mockito.when(mockedUserAnswerService.getUserAnswer(question_2)).thenReturn(answerFalse_2);
+
+        TestService testService = new TestServiceImpl(mockedUserAnswerService);
+
         TestResult result = testService.test(user, questions);
 
         assertEquals(1, result.getRightAnswers());
