@@ -19,4 +19,8 @@ public class AuthorServiceImpl implements AuthorService {
     public List<Author> getAll() {
         return authorDao.getAll();
     }
+
+    public Author get(long id) {
+        return authorDao.getById(id);
+    }
 }
