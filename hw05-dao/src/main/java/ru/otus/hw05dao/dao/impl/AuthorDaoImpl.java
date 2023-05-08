@@ -7,6 +7,7 @@ import ru.otus.hw05dao.entity.Author;
 import ru.otus.hw05dao.mapper.AuthorMapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class AuthorDaoImpl implements AuthorDao {
@@ -20,5 +21,11 @@ public class AuthorDaoImpl implements AuthorDao {
     public List<Author> getAll(){
         return namedParameterJdbcOperations.query(
                 "SELECT * FROM AUTHORS",new AuthorMapper());
+    }
+
+    @Override
+    public Author getById(long id) {
+        return namedParameterJdbcOperations.queryForObject(
+                "SELECT * FROM AUTHORS WHERE ID = :Id", Map.of("Id", id),new AuthorMapper());
     }
 }

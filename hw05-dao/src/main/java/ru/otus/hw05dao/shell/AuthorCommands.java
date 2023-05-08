@@ -18,9 +18,16 @@ public class AuthorCommands {
         this.authorService = authorService;
     }
 
-    @ShellMethod
+    @ShellMethod(value = "Get all saved book authors", key = "gav")
     public String getAllAuthors(){
         var authors = authorService.getAll();
         return authorFormatter.format(authors);
     }
+
+    @ShellMethod(value = "Get book author by id", key = "ga")
+    public String getAuthor(long id){
+        var author = authorService.get(id);
+        return authorFormatter.format(author);
+    }
+
 }
