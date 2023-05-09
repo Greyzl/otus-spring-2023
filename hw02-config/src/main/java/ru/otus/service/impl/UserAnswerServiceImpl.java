@@ -3,16 +3,13 @@ package ru.otus.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.entity.Answer;
 import ru.otus.entity.Question;
-import ru.otus.entity.PositionedAnswerOption;
-import ru.otus.entity.PositionedAnswerOptions;
-import ru.otus.exception.AnswerNotFoundException;
-import ru.otus.formatter.GetUserAnswerTextFormatter;
+import ru.otus.formatter.UserAnswerTextFormatter;
 import ru.otus.service.InputService;
 import ru.otus.service.OutputService;
 import ru.otus.service.UserAnswerService;
+import ru.otus.untils.AnswerOptionUtils;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserAnswerServiceImpl implements UserAnswerService {
@@ -24,29 +21,27 @@ public class UserAnswerServiceImpl implements UserAnswerService {
 
     private final InputService inputService;
 
-    private final GetUserAnswerTextFormatter getUserAnswerTextFormatter;
+    private final UserAnswerTextFormatter userAnswerTextFormatter;
 
     public UserAnswerServiceImpl(OutputService outputService,
                                  InputService inputService,
-                                 GetUserAnswerTextFormatter getUserAnswerTextFormatter){
+                                 UserAnswerTextFormatter userAnswerTextFormatter){
         this.outputService = outputService;
         this.inputService = inputService;
-        this.getUserAnswerTextFormatter = getUserAnswerTextFormatter;
+        this.userAnswerTextFormatter = userAnswerTextFormatter;
     }
 
     @Override
     public Answer getUserAnswer(Question question) {
         List<Answer> answerOptions = question.getAnswerOptions();
-        PositionedAnswerOptions positionedAnswerOptions = new PositionedAnswerOptions(answerOptions);
-        outputService.output(getUserAnswerTextFormatter.format(question, positionedAnswerOptions));
+        outputService.output(userAnswerTextFormatter.format(question, answerOptions));
         while (true){
             outputService.output(ENTER_ANSWER_TEXT);
             String userAnswerPositionText = inputService.read();
             try {
                 int userAnswerPosition = Integer.parseInt(userAnswerPositionText);
-                Optional<PositionedAnswerOption> mayBeUserAnswerOption =
-                        positionedAnswerOptions.get(userAnswerPosition);
-                return mayBeUserAnswerOption.orElseThrow(AnswerNotFoundException::new).getAnswer();
+                int answerOptionArrayIndex = AnswerOptionUtils.getArrayIndex(userAnswerPosition);
+                return answerOptions.get(answerOptionArrayIndex);
             } catch (Exception e){
                 outputService.output(OPTION_ANSWER_NOT_EXIST);
             }
