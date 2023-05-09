@@ -11,7 +11,7 @@ public class AuthorFormatterImpl implements AuthorFormatter {
 
     @Override
     public String format(Author author) {
-        return String.format("Author id: %d, name: %s", author.getId(), author.getName());
+        return String.format("id: %d. Author name: %s", author.getId(), author.getName());
     }
 
     @Override

@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:file:/Users/sergejsilkov/Documents/Project/dev/Otus/2023-03-otus-spring-Shilkov/hw05-dao/src/main/resources/data/app_data;AUTO_SERVER=true
   sql:
     init:
       mode: always
       data-locations: data.sql
       schema-locations: schema.sql
-  h2:
-    console:
-      path: /h2-console
-      settings:
-        web-allow-others: false
+#  h2:
+#    console:
+#      path: /h2-console
+#      settings:
+#        web-allow-others: false
