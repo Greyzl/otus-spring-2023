@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id ("com.github.johnrengelman.shadow")
+    id ("io.spring.dependency-management")
 }
 
 
@@ -11,20 +12,28 @@ repositories {
     mavenCentral()
 }
 
-val springVersion = "6.0.7"
+val springBoot = "3.0.6"
 val openCsvVersion = "5.7.1"
-val junitVersion = "5.8.1"
 val apacheCommonsVersion = "3.12.0"
-val mockitoVersion = "5.3.1"
 
 dependencies {
-    implementation("org.springframework:spring-context:${springVersion}")
-    implementation("com.opencsv:opencsv:${openCsvVersion}")
-    implementation("org.apache.commons:commons-lang3:${apacheCommonsVersion}")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
-    testImplementation("org.mockito:mockito-core:${mockitoVersion}")
-    testImplementation("org.mockito:mockito-junit-jupiter:${mockitoVersion}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    implementation("org.springframework.boot:spring-boot-starter")
+    implementation("com.opencsv:opencsv")
+    implementation("org.apache.commons:commons-lang3")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+}
+
+
+
+dependencyManagement {
+    dependencies {
+        dependency("com.opencsv:opencsv:${openCsvVersion}")
+        dependency("org.apache.commons:commons-lang3:${apacheCommonsVersion}")
+        dependency("org.springframework.boot:spring-boot-starter:${springBoot}")
+        dependency("org.springframework.boot:spring-boot-starter-test:${springBoot}")
+    }
+    imports {
+    }
 }
 
 tasks.getByName<Test>("test") {

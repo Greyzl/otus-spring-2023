@@ -1,16 +1,12 @@
 package ru.otus;
 
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import ru.otus.config.AppConfig;
-import ru.otus.service.ApplicationRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-
+@SpringBootApplication
 public class Main {
     public static void main(String[] args) {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-        ApplicationRunner questionApplication = ctx.getBean(ApplicationRunner.class);
-        questionApplication.run();
+        SpringApplication.run(Main.class, args);
     }
 }

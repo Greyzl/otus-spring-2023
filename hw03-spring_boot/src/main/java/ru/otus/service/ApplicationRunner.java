@@ -1,5 +1,6 @@
 package ru.otus.service;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import ru.otus.entity.Question;
 import ru.otus.entity.TestResult;
@@ -9,7 +10,7 @@ import ru.otus.formatter.TestResultOutputFormatter;
 import java.util.List;
 
 @Component
-public class ApplicationRunner {
+public class ApplicationRunner implements CommandLineRunner {
 
     private final OutputService outputService;
 
@@ -33,7 +34,8 @@ public class ApplicationRunner {
         this.userService = userService;
     }
 
-    public void run(){
+    @Override
+    public void run(String... args) {
         User user = userService.getUser();
         List<Question> questions = questionService.getQuestions();
         TestResult testResult = testService.test(user, questions);
