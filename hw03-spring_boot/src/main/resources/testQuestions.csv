@@ -1,0 +1,6 @@
+text,right_option,answer_option_1,answer_option_2
+What is S in SOLID?,Single responsibility,Software technics,System requirements
+What is O in SOLID?,Open-Close,Object oriented,On premise
+What is L in SOLID?,Liskov,Lightweight,latent
+What is I in SOLID?,Interface segregation,Inversion of control,Injection
+What is D in SOLID?,Dependency inversion,Divided,Development
