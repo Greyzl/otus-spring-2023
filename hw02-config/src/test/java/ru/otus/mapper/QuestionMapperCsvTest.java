@@ -9,22 +9,22 @@ import ru.otus.dto.QuestionCsvDto;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class QuestionMapperCsvTest {
 
     private final QuestionMapperCsv mapperCsv = new QuestionMapperCsv();
 
     @Test
-    void test_mapQuestion_whiteSpaces() {
-        QuestionCsvDto questionCsv_Dto_whiteSpaces = new QuestionCsvDto();
-        questionCsv_Dto_whiteSpaces.setText(" Testing question  ");
-        questionCsv_Dto_whiteSpaces.setRightAnswer("rightOption     ");
+    void testMapQuestionWhiteSpaces() {
+        QuestionCsvDto questionCsvDtoWhiteSpaces = new QuestionCsvDto();
+        questionCsvDtoWhiteSpaces.setText(" Testing question  ");
+        questionCsvDtoWhiteSpaces.setRightAnswer("rightOption     ");
         MultiValuedMap<String, String> testAnswerOptions = new HashSetValuedHashMap<>();
         testAnswerOptions.put(" parameter1", " wrongOption  ");
-        questionCsv_Dto_whiteSpaces.setAnswerOptions(testAnswerOptions);
+        questionCsvDtoWhiteSpaces.setAnswerOptions(testAnswerOptions);
 
-        Question question = mapperCsv.mapQuestion(questionCsv_Dto_whiteSpaces);
+        Question question = mapperCsv.mapQuestion(questionCsvDtoWhiteSpaces);
         assertEquals("Testing question", question.getText());
 
         Optional<Answer> mayBeRight = question.getAnswerOptions()

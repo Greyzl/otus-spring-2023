@@ -5,9 +5,11 @@ import ru.otus.entity.Answer;
 import ru.otus.entity.Question;
 import ru.otus.mapper.QuestionMapperCsv;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 class QuestionCSVDaoTest {
 
@@ -22,13 +24,13 @@ class QuestionCSVDaoTest {
         List<Answer> answerOptionsList = question.getAnswerOptions();
 
         List<Answer> expectedAnswerResults = new ArrayList<>();
-        Answer expectedAnswer_1 = new Answer("right answer",true);
-        Answer expectedAnswer_2 = new Answer("wrong_answer_1",false);
-        Answer expectedAnswer_3 = new Answer("wrong_answer_2",false);
+        Answer expectedAnswer1 = new Answer("right answer",true);
+        Answer expectedAnswer2 = new Answer("wrong_answer_1",false);
+        Answer expectedAnswer3 = new Answer("wrong_answer_2",false);
 
-        expectedAnswerResults.add(expectedAnswer_1);
-        expectedAnswerResults.add(expectedAnswer_2);
-        expectedAnswerResults.add(expectedAnswer_3);
+        expectedAnswerResults.add(expectedAnswer1);
+        expectedAnswerResults.add(expectedAnswer2);
+        expectedAnswerResults.add(expectedAnswer3);
 
         assertIterableEquals(expectedAnswerResults, answerOptionsList);
 

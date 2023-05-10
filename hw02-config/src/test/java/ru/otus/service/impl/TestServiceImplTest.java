@@ -12,7 +12,7 @@ import ru.otus.service.UserAnswerService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TestServiceImplTest {
 
@@ -46,38 +46,28 @@ class TestServiceImplTest {
 
     @Test
     void testDifferentAnswersResult() {
-
-        List<Answer> answerOptions_1 = new ArrayList<>();
-        Answer answerTrue_1 = new Answer("Test user answer 1", true);
-        Answer answerFalse_1 = new Answer("Test user answer 2", false);
-        answerOptions_1.add(answerTrue_1);
-        answerOptions_1.add(answerFalse_1);
-
-        Question question_1 = new Question("Test question text", answerOptions_1);
-
-        List<Answer> answerOptions_2 = new ArrayList<>();
-        Answer answerTrue_2 = new Answer("Test user answer 1", true);
-        Answer answerFalse_2 = new Answer("Test user answer 2", false);
-        answerOptions_2.add(answerFalse_2);
-        answerOptions_2.add(answerTrue_2);
-
-        Question question_2 = new Question("Test question text 2", answerOptions_2);
-
+        List<Answer> answerOptions1 = new ArrayList<>();
+        Answer answerTrue1 = new Answer("Test user answer 1", true);
+        Answer answerFalse1 = new Answer("Test user answer 2", false);
+        answerOptions1.add(answerTrue1);
+        answerOptions1.add(answerFalse1);
+        Question question1 = new Question("Test question text", answerOptions1);
+        List<Answer> answerOptions2 = new ArrayList<>();
+        Answer answerTrue2 = new Answer("Test user answer 1", true);
+        Answer answerFalse2 = new Answer("Test user answer 2", false);
+        answerOptions2.add(answerFalse2);
+        answerOptions2.add(answerTrue2);
+        Question question2 = new Question("Test question text 2", answerOptions2);
         List<Question> questions = new ArrayList<>();
-        questions.add(question_1);
-        questions.add(question_2);
-
+        questions.add(question1);
+        questions.add(question2);
         String userName = "Test user 2";
         User user = new User(userName);
-
         UserAnswerService mockedUserAnswerService = Mockito.mock(UserAnswerService.class);
-        Mockito.when(mockedUserAnswerService.getUserAnswer(question_1)).thenReturn(answerTrue_1);
-        Mockito.when(mockedUserAnswerService.getUserAnswer(question_2)).thenReturn(answerFalse_2);
-
+        Mockito.when(mockedUserAnswerService.getUserAnswer(question1)).thenReturn(answerTrue1);
+        Mockito.when(mockedUserAnswerService.getUserAnswer(question2)).thenReturn(answerFalse2);
         TestService testService = new TestServiceImpl(mockedUserAnswerService);
-
         TestResult result = testService.test(user, questions);
-
         assertEquals(1, result.getRightAnswers());
         assertEquals(2, result.getQuestionCount());
         assertEquals("Test user 2", result.getUserName());
