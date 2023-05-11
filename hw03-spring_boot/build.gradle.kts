@@ -2,6 +2,7 @@ plugins {
     id("java")
     id ("com.github.johnrengelman.shadow")
     id ("io.spring.dependency-management")
+    id("org.springframework.boot")
 }
 
 
@@ -17,16 +18,20 @@ val openCsvVersion = "5.7.1"
 val apacheCommonsVersion = "3.12.0"
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-parent")
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("com.opencsv:opencsv")
     implementation("org.apache.commons:commons-lang3")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+
 }
 
 
 
 dependencyManagement {
     dependencies {
+        dependency("org.springframework.boot:spring-boot-starter-parent:${springBoot}")
         dependency("com.opencsv:opencsv:${openCsvVersion}")
         dependency("org.apache.commons:commons-lang3:${apacheCommonsVersion}")
         dependency("org.springframework.boot:spring-boot-starter:${springBoot}")

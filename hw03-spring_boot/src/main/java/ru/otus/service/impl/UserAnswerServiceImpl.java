@@ -1,6 +1,8 @@
 package ru.otus.service.impl;
 
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.config.AppProps;
 import ru.otus.entity.Answer;
 import ru.otus.entity.Question;
 import ru.otus.formatter.UserAnswerTextFormatter;
@@ -13,22 +15,26 @@ import java.util.List;
 
 @Service
 public class UserAnswerServiceImpl implements UserAnswerService {
-    private static final String ENTER_ANSWER_TEXT = "Please, enter the number of option";
-
-    private static final String OPTION_ANSWER_NOT_EXIST = "Such option doesn't exist, please try again";
-
     private final OutputService outputService;
 
     private final InputService inputService;
 
     private final UserAnswerTextFormatter userAnswerTextFormatter;
 
+    private final MessageSource messageSource;
+
+    private final AppProps appProps;
+
     public UserAnswerServiceImpl(OutputService outputService,
                                  InputService inputService,
-                                 UserAnswerTextFormatter userAnswerTextFormatter){
+                                 UserAnswerTextFormatter userAnswerTextFormatter,
+                                 MessageSource messageSource,
+                                 AppProps appProps){
         this.outputService = outputService;
         this.inputService = inputService;
         this.userAnswerTextFormatter = userAnswerTextFormatter;
+        this.messageSource = messageSource;
+        this.appProps = appProps;
     }
 
     @Override
@@ -36,14 +42,18 @@ public class UserAnswerServiceImpl implements UserAnswerService {
         List<Answer> answerOptions = question.getAnswerOptions();
         outputService.output(userAnswerTextFormatter.format(question, answerOptions));
         while (true){
-            outputService.output(ENTER_ANSWER_TEXT);
+            String chooseOptionText = messageSource.getMessage(
+                    "user-answer.messages.choose-option",null, appProps.getLocale());
+            outputService.output(chooseOptionText);
             String userAnswerPositionText = inputService.read();
             try {
                 int userAnswerPosition = Integer.parseInt(userAnswerPositionText);
                 int answerOptionArrayIndex = AnswerOptionUtils.getArrayIndex(userAnswerPosition);
                 return answerOptions.get(answerOptionArrayIndex);
             } catch (Exception e){
-                outputService.output(OPTION_ANSWER_NOT_EXIST);
+                String optionNotExistsText = messageSource.getMessage(
+                        "user-answer.messages.option-not-exits",null, appProps.getLocale());
+                outputService.output(optionNotExistsText);
             }
         }
     }
