@@ -3,6 +3,8 @@ package ru.otus.mapper;
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.HashSetValuedHashMap;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.otus.entity.Answer;
 import ru.otus.entity.Question;
 import ru.otus.dto.QuestionCsvDto;
@@ -11,9 +13,11 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 class QuestionMapperCsvTest {
 
-    private final QuestionMapperCsv mapperCsv = new QuestionMapperCsv();
+    @Autowired
+    private QuestionMapperCsv mapperCsv;
 
     @Test
     void testMapQuestionWhiteSpaces() {

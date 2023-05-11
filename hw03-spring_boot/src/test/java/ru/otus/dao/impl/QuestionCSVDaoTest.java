@@ -1,6 +1,9 @@
 package ru.otus.dao.impl;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import ru.otus.config.AppProps;
 import ru.otus.entity.Answer;
 import ru.otus.entity.Question;
 import ru.otus.mapper.QuestionMapperCsv;
@@ -11,12 +14,16 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
+@SpringBootTest
 class QuestionCSVDaoTest {
+
+    @Autowired
+    private AppProps appProps;
 
     @Test
     void loadQuestionsTest() {
         QuestionMapperCsv questionMapperCsv = new QuestionMapperCsv();
-        QuestionCSVDao questionCSVDao = new QuestionCSVDao(questionMapperCsv, "testQuestions.csv");
+        QuestionCSVDao questionCSVDao = new QuestionCSVDao(questionMapperCsv, appProps);
         List<Question> questions = questionCSVDao.loadQuestions();
         Question question = questions.get(0);
 

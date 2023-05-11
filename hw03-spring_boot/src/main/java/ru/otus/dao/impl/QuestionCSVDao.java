@@ -3,6 +3,8 @@ package ru.otus.dao.impl;
 
 import com.opencsv.bean.CsvToBeanBuilder;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Repository;
+import ru.otus.config.AppProps;
 import ru.otus.dao.QueationDao;
 import ru.otus.entity.Question;
 import ru.otus.dto.QuestionCsvDto;
@@ -15,15 +17,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class QuestionCSVDao implements QueationDao {
 
     private final QuestionMapperCsv questionMapperCsv;
 
     private final String fileName ;
 
-    public QuestionCSVDao(QuestionMapperCsv questionMapperCsv, String fileName){
+    public QuestionCSVDao(QuestionMapperCsv questionMapperCsv, AppProps props){
         this.questionMapperCsv = questionMapperCsv;
-        this.fileName = fileName;
+        this.fileName = props.getQuestionFile();
     }
 
     public List<Question> loadQuestions() {
