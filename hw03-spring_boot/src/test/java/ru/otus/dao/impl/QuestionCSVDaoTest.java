@@ -3,10 +3,8 @@ package ru.otus.dao.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ru.otus.config.AppProps;
 import ru.otus.entity.Answer;
 import ru.otus.entity.Question;
-import ru.otus.mapper.QuestionMapperCsv;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,12 +16,10 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 class QuestionCSVDaoTest {
 
     @Autowired
-    private AppProps appProps;
+    private QuestionCSVDao questionCSVDao;
 
     @Test
     void loadQuestionsTest() {
-        QuestionMapperCsv questionMapperCsv = new QuestionMapperCsv();
-        QuestionCSVDao questionCSVDao = new QuestionCSVDao(questionMapperCsv, appProps);
         List<Question> questions = questionCSVDao.loadQuestions();
         Question question = questions.get(0);
 
