@@ -15,30 +15,30 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class AuthorDaoImpl implements AuthorDao {
+public class AuthorDaoJdbc implements AuthorDao {
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public AuthorDaoImpl(NamedParameterJdbcOperations namedParameterJdbcOperations){
+    public AuthorDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations){
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
     public List<Author> getAll(){
         return namedParameterJdbcOperations.query(
-                "SELECT * FROM AUTHORS",new AuthorMapper());
+                "SELECT ID, NAME FROM AUTHORS",new AuthorMapper());
     }
 
     @Override
     public Optional<Author> getById(long id) {
         return namedParameterJdbcOperations.query(
-                "SELECT * FROM AUTHORS WHERE ID = :Id",
+                "SELECT ID, NAME FROM AUTHORS WHERE ID = :Id",
                 Map.of("Id", id),new AuthorMapper()).stream().findFirst();
     }
 
     @Override
     public Optional<Author> findByName(String name) {
         return namedParameterJdbcOperations.query(
-                "SELECT * FROM AUTHORS WHERE NAME = :name",
+                "SELECT ID, NAME FROM AUTHORS WHERE NAME = :name",
                 Map.of("name", name),new AuthorMapper()).stream().findFirst();
     }
 

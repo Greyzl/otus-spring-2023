@@ -15,31 +15,32 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class GenreDaoImpl implements GenreDao {
+public class GenreDaoJdbc implements GenreDao {
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public GenreDaoImpl(NamedParameterJdbcOperations namedParameterJdbcOperations){
+    public GenreDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations){
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
     @Override
     public List<Genre> getAll() {
-        return namedParameterJdbcOperations.query("SELECT * FROM GENRES", new GenreMapping());
+        return namedParameterJdbcOperations.query(
+                "SELECT ID, NAME FROM GENRES", new GenreMapping());
 
     }
 
     @Override
     public Optional<Genre> getById(long id) {
         return namedParameterJdbcOperations.query(
-                "SELECT * FROM GENRES WHERE ID = :id",
+                "SELECT ID, NAME FROM GENRES WHERE ID = :id",
                 Map.of("id", id),new GenreMapping()).stream().findFirst();
     }
 
     @Override
     public Optional<Genre> findByName(String name) {
         return namedParameterJdbcOperations.query(
-                "SELECT * FROM GENRES WHERE NAME = :name",
+                "SELECT ID, NAME FROM GENRES WHERE NAME = :name",
                 Map.of("name", name),new GenreMapping()).stream().findFirst();
     }
 

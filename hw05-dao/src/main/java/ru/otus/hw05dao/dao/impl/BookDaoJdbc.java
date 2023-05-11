@@ -17,10 +17,10 @@ import java.util.Map;
 import java.util.Optional;
 
 @Repository
-public class BookDaoImpl implements BookDao {
+public class BookDaoJdbc implements BookDao {
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 
-    public BookDaoImpl(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
     }
 
