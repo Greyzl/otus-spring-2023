@@ -1,20 +1,32 @@
 package ru.otus.hw05dao.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import ru.otus.hw05dao.builder.AuthorBuilder;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "AUTHORS")
 public class Author {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "NAME")
     private String name;
 
-    public Author (){
+    @OneToMany(mappedBy = "AUTHOR_ID")
+    private List<Book> books;
+
+    public Author(){
 
     }
 
@@ -31,8 +43,24 @@ public class Author {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 
     public AuthorBuilder toBuilder(){

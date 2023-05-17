@@ -1,18 +1,36 @@
 package ru.otus.hw05dao.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import ru.otus.hw05dao.builder.BookBuilder;
 
 import java.util.Objects;
 
+@Entity
+@Table(name = "BOOKS")
 public class Book {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private final String title;
+    @Column(name = "TITLE")
+    private String title;
 
-    private final Author author;
+    @ManyToOne()
+    private Author author;
 
-    private final Genre genre;
+    @ManyToOne
+    private Genre genre;
+
+    public Book(){
+
+    }
 
     public Book(String title, Author author, Genre genre){
         this.title = title;
