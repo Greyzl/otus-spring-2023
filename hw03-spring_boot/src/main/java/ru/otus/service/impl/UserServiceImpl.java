@@ -1,10 +1,9 @@
 package ru.otus.service.impl;
 
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.config.AppProps;
 import ru.otus.entity.User;
 import ru.otus.service.InputService;
+import ru.otus.service.LocalizedMessageService;
 import ru.otus.service.OutputService;
 import ru.otus.service.UserService;
 
@@ -14,24 +13,20 @@ public class UserServiceImpl implements UserService {
 
     private final InputService inputService;
 
-    private final MessageSource messageSource;
-
-    private final AppProps appProps;
+    private final LocalizedMessageService localizedMessageService;
 
     public UserServiceImpl(OutputService outputService,
                            InputService inputService,
-                           MessageSource messageSource,
-                           AppProps appProps){
+                           LocalizedMessageService localizedMessageService){
         this.outputService = outputService;
         this.inputService = inputService;
-        this.messageSource = messageSource;
-        this.appProps = appProps;
+        this.localizedMessageService = localizedMessageService;
     }
     
     @Override
     public User getUser() {
-        String nameQuestionText = messageSource.getMessage(
-                "user.messages.name-question", null, appProps.getLocale());
+        String nameQuestionText = localizedMessageService.getMessage(
+                "user.messages.name-question", null);
         outputService.output(nameQuestionText);
         String userName = inputService.read();
         return new User(userName);

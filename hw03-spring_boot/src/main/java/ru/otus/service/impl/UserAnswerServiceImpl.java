@@ -1,12 +1,11 @@
 package ru.otus.service.impl;
 
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
-import ru.otus.config.AppProps;
 import ru.otus.entity.Answer;
 import ru.otus.entity.Question;
 import ru.otus.formatter.UserAnswerTextFormatter;
 import ru.otus.service.InputService;
+import ru.otus.service.LocalizedMessageService;
 import ru.otus.service.OutputService;
 import ru.otus.service.UserAnswerService;
 import ru.otus.untils.AnswerOptionUtils;
@@ -21,20 +20,17 @@ public class UserAnswerServiceImpl implements UserAnswerService {
 
     private final UserAnswerTextFormatter userAnswerTextFormatter;
 
-    private final MessageSource messageSource;
+    private final LocalizedMessageService localizedMessageService;
 
-    private final AppProps appProps;
 
     public UserAnswerServiceImpl(OutputService outputService,
                                  InputService inputService,
                                  UserAnswerTextFormatter userAnswerTextFormatter,
-                                 MessageSource messageSource,
-                                 AppProps appProps){
+                                 LocalizedMessageService localizedMessageService){
         this.outputService = outputService;
         this.inputService = inputService;
         this.userAnswerTextFormatter = userAnswerTextFormatter;
-        this.messageSource = messageSource;
-        this.appProps = appProps;
+        this.localizedMessageService = localizedMessageService;
     }
 
     @Override
@@ -42,8 +38,8 @@ public class UserAnswerServiceImpl implements UserAnswerService {
         List<Answer> answerOptions = question.getAnswerOptions();
         outputService.output(userAnswerTextFormatter.format(question, answerOptions));
         while (true){
-            String chooseOptionText = messageSource.getMessage(
-                    "user-answer.messages.choose-option",null, appProps.getLocale());
+            String chooseOptionText = localizedMessageService.getMessage(
+                    "user-answer.messages.choose-option",null);
             outputService.output(chooseOptionText);
             String userAnswerPositionText = inputService.read();
             try {
@@ -51,8 +47,8 @@ public class UserAnswerServiceImpl implements UserAnswerService {
                 int answerOptionArrayIndex = AnswerOptionUtils.getArrayIndex(userAnswerPosition);
                 return answerOptions.get(answerOptionArrayIndex);
             } catch (Exception e){
-                String optionNotExistsText = messageSource.getMessage(
-                        "user-answer.messages.option-not-exits",null, appProps.getLocale());
+                String optionNotExistsText = localizedMessageService.getMessage(
+                        "user-answer.messages.option-not-exits",null);
                 outputService.output(optionNotExistsText);
             }
         }

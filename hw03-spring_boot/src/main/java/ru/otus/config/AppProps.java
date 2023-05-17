@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.Locale;
 
 @ConfigurationProperties("application")
-public class AppProps {
+public class AppProps implements QuestionCsvResourceFileNameHolder, LocaleHolder {
     private Locale locale;
 
     private TestFile testFile;
@@ -47,7 +47,8 @@ public class AppProps {
         this.testFile = testFile;
     }
 
-    public String getQuestionFile(){
+    @Override
+    public String getResourceFileName() {
         return testFile.getPath() + "_" + locale + "." + testFile.getExtension();
     }
 }
