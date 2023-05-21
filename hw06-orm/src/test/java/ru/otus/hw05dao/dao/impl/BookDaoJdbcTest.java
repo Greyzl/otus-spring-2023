@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Import;
 import ru.otus.hw05dao.entity.Author;
 import ru.otus.hw05dao.entity.Book;
 import ru.otus.hw05dao.entity.Genre;
+import ru.otus.hw05dao.persistance.dao.impl.BookDaoJdbc;
 
 import java.util.ArrayList;
 import java.util.List;

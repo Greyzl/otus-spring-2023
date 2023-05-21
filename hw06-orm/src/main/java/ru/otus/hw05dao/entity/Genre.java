@@ -18,16 +18,25 @@ import java.util.Objects;
 public class Genre {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "NAME")
     private String name;
 
-    @OneToMany(mappedBy = "GENRE_ID",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "genre",fetch = FetchType.LAZY)
     private List<Book> books;
 
     public Genre() {
+    }
+
+    public Genre(String name) {
+        this.name = name;
+    }
+
+    public Genre(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public Genre(long id, String name, List<Book> books) {

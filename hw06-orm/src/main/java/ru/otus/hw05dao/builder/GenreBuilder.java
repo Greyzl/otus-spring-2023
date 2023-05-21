@@ -7,6 +7,7 @@ public class GenreBuilder {
 
     private String name;
 
+
     public GenreBuilder(long id, String name){
         this.id = id;
         this.name = name;

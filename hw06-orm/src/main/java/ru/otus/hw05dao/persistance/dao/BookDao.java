@@ -1,4 +1,4 @@
-package ru.otus.hw05dao.dao;
+package ru.otus.hw05dao.persistance.dao;
 
 import ru.otus.hw05dao.entity.Author;
 import ru.otus.hw05dao.entity.Book;

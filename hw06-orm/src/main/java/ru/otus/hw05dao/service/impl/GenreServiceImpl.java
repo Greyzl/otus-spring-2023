@@ -1,7 +1,7 @@
 package ru.otus.hw05dao.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.hw05dao.dao.GenreDao;
+import ru.otus.hw05dao.persistance.dao.GenreDao;
 import ru.otus.hw05dao.entity.Genre;
 import ru.otus.hw05dao.service.GenreService;
 

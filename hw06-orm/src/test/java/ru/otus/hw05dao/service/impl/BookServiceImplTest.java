@@ -5,7 +5,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.hw05dao.dao.BookDao;
+import ru.otus.hw05dao.persistance.dao.BookDao;
 import ru.otus.hw05dao.entity.Author;
 import ru.otus.hw05dao.entity.Book;
 import ru.otus.hw05dao.entity.Genre;

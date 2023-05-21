@@ -1,11 +1,11 @@
-package ru.otus.hw05dao.dao.impl;
+package ru.otus.hw05dao.persistance.dao.impl;
 
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-import ru.otus.hw05dao.dao.BookDao;
+import ru.otus.hw05dao.persistance.dao.BookDao;
 import ru.otus.hw05dao.entity.Author;
 import ru.otus.hw05dao.entity.Book;
 import ru.otus.hw05dao.entity.Genre;

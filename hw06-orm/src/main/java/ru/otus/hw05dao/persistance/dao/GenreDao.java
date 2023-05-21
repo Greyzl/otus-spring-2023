@@ -1,10 +1,12 @@
-package ru.otus.hw05dao.dao;
+package ru.otus.hw05dao.persistance.dao;
 
+import org.springframework.stereotype.Repository;
 import ru.otus.hw05dao.entity.Genre;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface GenreDao {
     List<Genre> getAll();
 

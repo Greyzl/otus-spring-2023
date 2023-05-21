@@ -2,7 +2,7 @@ package ru.otus.hw05dao.service.impl;
 
 import org.springframework.stereotype.Service;
 import ru.otus.hw05dao.builder.BookBuilder;
-import ru.otus.hw05dao.dao.BookDao;
+import ru.otus.hw05dao.persistance.dao.BookDao;
 import ru.otus.hw05dao.entity.Book;
 import ru.otus.hw05dao.exception.AuthorNotFoundException;
 import ru.otus.hw05dao.exception.GenreNotFoundException;

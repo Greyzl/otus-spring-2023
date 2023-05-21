@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:file:/Users/sergejsilkov/Documents/Project/dev/Otus/2023-03-otus-spring-Shilkov/hw05-dao/src/test/resources/data/app_data;AUTO_SERVER=true
+    url: jdbc:h2:file:C:\DevProjects\Otus\2023-03-otus-spring-Shilkov\hw06-orm\src\test\resources\data\app_data;AUTO_SERVER=true
   sql:
     init:
       mode: always
