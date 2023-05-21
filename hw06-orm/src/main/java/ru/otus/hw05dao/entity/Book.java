@@ -2,6 +2,7 @@ package ru.otus.hw05dao.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,16 +17,16 @@ import java.util.Objects;
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "TITLE")
     private String title;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     private Author author;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Genre genre;
 
     public Book(){
@@ -53,16 +54,8 @@ public class Book {
         return title;
     }
 
-    public long getAuthorId(){
-        return author.getId();
-    }
-
     public String getAuthorName() {
         return author.getName();
-    }
-
-    public long getGenreId(){
-        return genre.getId();
     }
 
     public String getGenreName() {

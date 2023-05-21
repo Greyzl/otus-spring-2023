@@ -5,12 +5,12 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.otus.hw05dao.persistance.dao.BookDao;
 import ru.otus.hw05dao.entity.Author;
 import ru.otus.hw05dao.entity.Book;
 import ru.otus.hw05dao.entity.Genre;
 import ru.otus.hw05dao.exception.AuthorNotFoundException;
 import ru.otus.hw05dao.exception.GenreNotFoundException;
+import ru.otus.hw05dao.persistance.repository.BookRepository;
 import ru.otus.hw05dao.service.AuthorService;
 import ru.otus.hw05dao.service.BookService;
 import ru.otus.hw05dao.service.GenreService;
@@ -31,7 +31,7 @@ class BookServiceImplTest {
     private GenreService genreService;
 
     @MockBean
-    private BookDao bookDao;
+    private BookRepository bookRepository;
 
 
     @Autowired
@@ -56,7 +56,7 @@ class BookServiceImplTest {
         books.add(book3);
         books.add(book4);
         books.add(book5);
-        Mockito.when(bookDao.getAll()).thenReturn(books);
+        Mockito.when(bookRepository.getAll()).thenReturn(books);
 
         Author expectedAuthor1 = author1.toBuilder().build();
         Author expectedAuthor2 = author2.toBuilder().build();
@@ -83,7 +83,9 @@ class BookServiceImplTest {
     @Test
     void givenAuthor_whenFindByAuthor_thenReturnBooksByAuthor() {
         Author author1 = new Author(1, "Test author 1");
+
         var mayBeAuthor = Optional.of(author1);
+
         Genre genre1 = new Genre(1, "Test genre 1");
         Genre genre2 = new Genre(2, "Test genre 2");
         Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1);
@@ -94,6 +96,7 @@ class BookServiceImplTest {
         books.add(book1);
         books.add(book2);
         books.add(book3);
+        author1.setBooks(books);
 
         Author expectedAuthor1 = author1.toBuilder().build();
         Genre expectedGenre1 = genre1.toBuilder().build();
@@ -109,7 +112,6 @@ class BookServiceImplTest {
 
         String authorName = "Test author";
         Mockito.when(authorService.findByName(authorName)).thenReturn(mayBeAuthor);
-        Mockito.when(bookDao.findByAuthor(author1)).thenReturn(books);
 
         List<Book> resultBooks = bookService.findByAuthorName(authorName);
         assertIterableEquals(expectedBooks, resultBooks);
@@ -140,6 +142,8 @@ class BookServiceImplTest {
         books.add(book2);
         books.add(book3);
 
+        genre1.setBooks(books);
+
         Author expectedAuthor1 = author1.toBuilder().build();
         Author expectedAuthor2 = author2.toBuilder().build();
         Genre expectedGenre1 = genre1.toBuilder().build();
@@ -154,7 +158,6 @@ class BookServiceImplTest {
 
         String genreName = "Test genre";
         Mockito.when(genreService.getByName(genreName)).thenReturn(mayBeGenre);
-        Mockito.when(bookDao.findByGenre(genre1)).thenReturn(books);
 
         List<Book> resultBooks = bookService.findByGenreName(genreName);
         assertIterableEquals(expectedBooks, resultBooks);
@@ -180,7 +183,7 @@ class BookServiceImplTest {
         Genre expectedGenre = genre1.toBuilder().build();
         Book expectedBook = book1.toBuilder().setAuthor(expectedAuthor).setGenre(expectedGenre).build();
 
-        Mockito.when(bookDao.getById(id)).thenReturn(optionalBook1);
+        Mockito.when(bookRepository.getById(id)).thenReturn(optionalBook1);
 
         Book resultBook = bookService.get(id).orElseThrow();
         assertEquals(expectedBook, resultBook);
@@ -190,7 +193,7 @@ class BookServiceImplTest {
     void givenFakeId_whenGet_thenEmptyOptional(){
         long id = 0;
         Optional<Book> emptyBook = Optional.empty();
-        Mockito.when(bookDao.getById(id)).thenReturn(emptyBook);
+        Mockito.when(bookRepository.getById(id)).thenReturn(emptyBook);
         assertTrue(bookService.get(id).isEmpty());
     }
 
@@ -206,7 +209,7 @@ class BookServiceImplTest {
         Genre expectedGenre = genre1.toBuilder().build();
         Book expectedBook = book1.toBuilder().setAuthor(expectedAuthor).setGenre(expectedGenre).build();
 
-        Mockito.when(bookDao.findByTitle(title)).thenReturn(optionalBook1);
+        Mockito.when(bookRepository.findByTitle(title)).thenReturn(optionalBook1);
 
         Book resultBook = bookService.findByTitle(title).orElseThrow();
         assertEquals(expectedBook, resultBook);
@@ -216,7 +219,7 @@ class BookServiceImplTest {
     void givenFakeTitle_whenFindByTitle_thenReturnBook() {
         String title = "Test book 1, author_1, genre_1";
         Optional<Book> emptyBook = Optional.empty();
-        Mockito.when(bookDao.findByTitle(title)).thenReturn(emptyBook);
+        Mockito.when(bookRepository.findByTitle(title)).thenReturn(emptyBook);
         assertTrue(bookService.findByTitle(title).isEmpty());
     }
 
@@ -233,7 +236,7 @@ class BookServiceImplTest {
 
         Mockito.when(authorService.getOrCreate(authorName)).thenReturn(author1);
         Mockito.when(genreService.getOrCreate(genreName)).thenReturn(genre1);
-        Mockito.when(bookDao.insert(book1)).thenReturn(withId);
+        Mockito.when(bookRepository.save(book1)).thenReturn(withId);
 
         Book createdBook = bookService.add(titleName, authorName, genreName);
 
@@ -260,6 +263,7 @@ class BookServiceImplTest {
 
         Mockito.when(authorService.getOrCreate(newAuthorName)).thenReturn(newAuthor);
         Mockito.when(genreService.getOrCreate(newGenreName)).thenReturn(newGenre);
+        Mockito.when(bookRepository.save(newBook)).thenReturn(newBook);
 
         Book updatedBook = bookService.update(oldBook,newTitleName, newAuthorName, newGenreName);
 
