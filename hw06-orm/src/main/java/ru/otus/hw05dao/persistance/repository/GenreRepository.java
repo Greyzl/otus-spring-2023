@@ -1,22 +1,18 @@
-package ru.otus.hw05dao.persistance.dao;
+package ru.otus.hw05dao.persistance.repository;
 
-import org.springframework.stereotype.Repository;
 import ru.otus.hw05dao.entity.Genre;
 
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface GenreDao {
+public interface GenreRepository {
     List<Genre> getAll();
 
     Optional<Genre> getById(long id);
 
     Optional<Genre> findByName(String name);
 
-    Genre insert(Genre author);
-
-    void update(Genre author);
+    Genre save(Genre genre);
 
     void deleteById(long id);
 }

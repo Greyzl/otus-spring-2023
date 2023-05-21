@@ -1,8 +1,8 @@
 package ru.otus.hw05dao.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.hw05dao.persistance.dao.GenreDao;
 import ru.otus.hw05dao.entity.Genre;
+import ru.otus.hw05dao.persistance.repository.GenreRepository;
 import ru.otus.hw05dao.service.GenreService;
 
 import java.util.List;
@@ -11,25 +11,25 @@ import java.util.Optional;
 @Service
 public class GenreServiceImpl implements GenreService {
 
-    private final GenreDao genreDao;
+    private final GenreRepository genreRepository;
 
-    public GenreServiceImpl(GenreDao genreDao){
-        this.genreDao = genreDao;
+    public GenreServiceImpl(GenreRepository genreRepository){
+        this.genreRepository = genreRepository;
     }
 
     @Override
     public List<Genre> getAll() {
-        return genreDao.getAll();
+        return genreRepository.getAll();
     }
 
     @Override
     public Optional<Genre> get(long id) {
-        return genreDao.getById(id);
+        return genreRepository.getById(id);
     }
 
     @Override
     public Optional<Genre> getByName(String name) {
-        return genreDao.findByName(name);
+        return genreRepository.findByName(name);
     }
 
     @Override
@@ -40,18 +40,18 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public Genre add(String name) {
         Genre genre = new Genre(name);
-        return genreDao.insert(genre);
+        return genreRepository.save(genre);
     }
 
     @Override
     public Genre update(Genre genre, String name) {
         Genre updatedGenre = genre.toBuilder().setName(name).build();
-        genreDao.update(updatedGenre);
+        genreRepository.save(updatedGenre);
         return updatedGenre;
     }
 
     @Override
     public void deleteById(long id) {
-        genreDao.deleteById(id);
+        genreRepository.deleteById(id);
     }
 }
