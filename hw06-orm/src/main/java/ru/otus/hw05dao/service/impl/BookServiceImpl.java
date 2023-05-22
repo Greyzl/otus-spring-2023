@@ -3,6 +3,7 @@ package ru.otus.hw05dao.service.impl;
 import org.springframework.stereotype.Service;
 import ru.otus.hw05dao.builder.BookBuilder;
 import ru.otus.hw05dao.entity.Book;
+import ru.otus.hw05dao.entity.Comment;
 import ru.otus.hw05dao.exception.AuthorNotFoundException;
 import ru.otus.hw05dao.exception.GenreNotFoundException;
 import ru.otus.hw05dao.persistance.repository.BookRepository;
@@ -85,5 +86,30 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(long id) {
         bookRepository.deleteById(id);
+    }
+
+    @Override
+    public void addComment(Book book, String commentText) {
+        Comment newComment = new Comment(commentText);
+        List<Comment> comments = book.getComments();
+        comments.add(newComment);
+        bookRepository.save(book);
+    }
+
+    @Override
+    public Optional<Comment> getBookCommentById(Book book, long commentId) {
+        return book.getComments().stream().filter(comment -> comment.getId() == commentId).findFirst();
+    }
+
+    @Override
+    public List<Comment> getBookComments(Book book) {
+        return book.getComments();
+    }
+
+    @Override
+    public void removeComment(Book book, Comment comment) {
+        List<Comment> comments = book.getComments();
+        comments.remove(comment);
+        bookRepository.save(book);
     }
 }

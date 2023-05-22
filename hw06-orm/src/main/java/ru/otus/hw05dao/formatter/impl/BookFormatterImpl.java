@@ -13,8 +13,8 @@ public class BookFormatterImpl implements BookFormatter {
         return String.format("id: %d. Book title: \"%s\", by: %s. Genre: %s",
                 book.getId(),
                 book.getTitle(),
-                book.getAuthorName(),
-                book.getGenreName());
+                book.getAuthor().getName(),
+                book.getGenre().getName());
     }
 
     @Override

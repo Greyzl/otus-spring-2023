@@ -9,5 +9,5 @@ INSERT INTO BOOKS (TITLE, AUTHOR_ID, GENRE_ID) VALUES ('Spring in Action, Fifth 
 INSERT INTO BOOKS (TITLE, AUTHOR_ID, GENRE_ID) VALUES ('Refactoring', 3,1);
 INSERT INTO BOOKS (TITLE, AUTHOR_ID, GENRE_ID) VALUES ('Patterns of Enterprise Application Architecture', 3,1);
 
-
-
+INSERT INTO COMMENTS (BOOK_ID, TEXT) VALUES ( 1, 'Nice book' );
+INSERT INTO COMMENTS (BOOK_ID, TEXT) VALUES ( 1, 'I will try id' );

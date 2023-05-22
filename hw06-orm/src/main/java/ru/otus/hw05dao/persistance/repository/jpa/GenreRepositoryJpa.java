@@ -25,13 +25,17 @@ public class GenreRepositoryJpa implements GenreRepository {
 
     @Override
     public Optional<Genre> getById(long id) {
-        return Optional.ofNullable(entityManager.find(Genre.class, id));
+        return entityManager.createQuery(
+                        "select g from Genre g " +
+                                "left join fetch g.books b join fetch b.author where g.id = :id", Genre.class)
+                .setParameter("id", id).getResultList().stream().findFirst();
     }
 
     @Override
     public Optional<Genre> findByName(String name) {
         return entityManager.createQuery(
-                "select g from Genre g where g.name = :name", Genre.class)
+                "select g from Genre g " +
+                        "left join fetch g.books b join fetch b.author where g.name = :name", Genre.class)
                 .setParameter("name", name).getResultList().stream().findFirst();
     }
 

@@ -2,8 +2,8 @@ package ru.otus.hw05dao.persistance.repository.jpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw05dao.entity.Author;
 import ru.otus.hw05dao.persistance.repository.AuthorRepository;
 
@@ -18,19 +18,26 @@ public class AuthorRepositoryJPA implements AuthorRepository {
     private EntityManager entityManager;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Author> getAll() {
-        return entityManager.createQuery("SELECT A FROM Author A", Author.class).getResultList();
+        return entityManager.createQuery("select a from Author a", Author.class).getResultList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Author> getById(long id) {
-        return Optional.ofNullable(entityManager.find(Author.class, id));
+        return entityManager.createQuery(
+                        "select a from Author a " +
+                                "left join fetch a.books b join fetch b.genre where a.id = :id", Author.class)
+                .setParameter("id", id).getResultList().stream().findFirst();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Author> findByName(String name) {
         return entityManager.createQuery(
-                "SELECT A FROM Author A WHERE A.name = :name", Author.class)
+                "select a from Author a " +
+                        "left join fetch a.books b join fetch b.genre where a.name = :name", Author.class)
                 .setParameter("name", name).getResultList().stream().findFirst();
     }
 
@@ -49,7 +56,7 @@ public class AuthorRepositoryJPA implements AuthorRepository {
     @Transactional
     @Override
     public void deleteById(long id) {
-        entityManager.createQuery("delete FROM Author where id = :id")
+        entityManager.createQuery("delete from Author where id = :id")
                 .setParameter("id",id).executeUpdate();
     }
 }

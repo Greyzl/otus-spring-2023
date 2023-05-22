@@ -4,11 +4,9 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.hw05dao.entity.Book;
-import ru.otus.hw05dao.exception.AuthorNotFoundException;
-import ru.otus.hw05dao.exception.BookAlreadyExistsException;
-import ru.otus.hw05dao.exception.BookNotFoundException;
-import ru.otus.hw05dao.exception.GenreNotFoundException;
+import ru.otus.hw05dao.exception.*;
 import ru.otus.hw05dao.formatter.BookFormatter;
+import ru.otus.hw05dao.formatter.CommentFormatter;
 import ru.otus.hw05dao.service.BookService;
 
 @ShellComponent
@@ -18,10 +16,14 @@ public class BookCommands {
 
     private final BookService bookService;
 
+    private final CommentFormatter commentFormatter;
+
     public BookCommands(BookFormatter bookFormatter,
-                        BookService bookService){
+                        BookService bookService,
+                        CommentFormatter commentFormatter){
         this.bookFormatter = bookFormatter;
         this.bookService = bookService;
+        this.commentFormatter = commentFormatter;
     }
 
     @ShellMethod(value = "Get all saved books", key = {"book-get-all", "bga"})
@@ -114,6 +116,46 @@ public class BookCommands {
     public String deleteAuthor(@ShellOption({"-i", "--id"}) long id){
         bookService.deleteById(id);
         return "Author successfully deleted";
+    }
+
+    @ShellMethod(value = "Add comment to book", key = {"Book-comment-add", "bca"})
+    public String addComment(@ShellOption({"-i", "--bookId"}) long bookId,
+                             @ShellOption({"-c", "--comment"}) String commentText){
+        try {
+            var book = bookService.get(bookId).orElseThrow(BookNotFoundException::new);
+            bookService.addComment(book, commentText);
+            return "Comment successfully added";
+        } catch (BookNotFoundException e){
+            return "Book with such id is not found";
+        }
+    }
+
+    @ShellMethod(value = "Get book comments", key = {"Book-comment-get-all", "bcga"})
+    public String getBookComments(@ShellOption({"-i", "--bookId"}) long bookId){
+        try {
+            var book = bookService.get(bookId).orElseThrow(BookNotFoundException::new);
+            var comments = book.getComments();
+            if (comments.size() == 0){
+                return "Comments are not found";
+            }
+            return commentFormatter.format(book.getComments());
+        } catch (BookNotFoundException e){
+            return "Book with such id is not found";
+        }
+    }
+
+    @ShellMethod(value = "Delete book comment", key = {"Book-comment-delete", "bcd"})
+    public String deleteComment(@ShellOption({"-i", "--bookId"}) long bookId,
+                             @ShellOption({"-ci", "--commentId"}) long commentId){
+        try {
+            var book = bookService.get(bookId).orElseThrow(BookNotFoundException::new);
+            var searchedComment = bookService.getBookCommentById(book,
+                    commentId).orElseThrow(CommentNotFoundException::new);
+            bookService.removeComment(book, searchedComment);
+            return "Comment successfully deleted";
+        } catch (BookNotFoundException e){
+            return "Book with such id is not found";
+        }
     }
 
 }

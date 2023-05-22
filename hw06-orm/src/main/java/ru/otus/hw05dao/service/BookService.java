@@ -1,6 +1,7 @@
 package ru.otus.hw05dao.service;
 
 import ru.otus.hw05dao.entity.Book;
+import ru.otus.hw05dao.entity.Comment;
 import ru.otus.hw05dao.exception.AuthorNotFoundException;
 import ru.otus.hw05dao.exception.GenreNotFoundException;
 
@@ -24,4 +25,12 @@ public interface BookService {
     Book update(Book book, String title, String authorName, String genreName);
 
     void deleteById(long id);
+
+    void addComment(Book book, String commentText);
+
+    Optional<Comment> getBookCommentById(Book book, long commentId);
+
+    List<Comment> getBookComments(Book book);
+
+    void removeComment(Book book, Comment id);
 }

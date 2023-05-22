@@ -1,15 +1,9 @@
 package ru.otus.hw05dao.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import ru.otus.hw05dao.builder.BookBuilder;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -29,6 +23,10 @@ public class Book {
     @ManyToOne(fetch = FetchType.LAZY)
     private Genre genre;
 
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "BOOK_ID")
+    private List<Comment> comments;
+
     public Book(){
 
     }
@@ -39,11 +37,12 @@ public class Book {
         this.genre = genre;
     }
 
-    public Book(long id, String title, Author author, Genre genre){
+    public Book(long id, String title, Author author, Genre genre, List<Comment> comments){
         this.id = id;
         this.title = title;
         this.author = author;
         this.genre = genre;
+        this.comments = comments;
     }
 
     public long getId() {
@@ -54,16 +53,20 @@ public class Book {
         return title;
     }
 
-    public String getAuthorName() {
-        return author.getName();
+    public Author getAuthor() {
+        return author;
     }
 
-    public String getGenreName() {
-        return genre.getName();
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
     public BookBuilder toBuilder(){
-        return new BookBuilder(id, title, author, genre);
+        return new BookBuilder(id, title, author, genre, comments);
     }
 
     @Override
