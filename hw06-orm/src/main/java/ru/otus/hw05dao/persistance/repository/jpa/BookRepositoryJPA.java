@@ -4,7 +4,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.otus.hw05dao.entity.Author;
 import ru.otus.hw05dao.entity.Book;
+import ru.otus.hw05dao.entity.Genre;
 import ru.otus.hw05dao.persistance.repository.BookRepository;
 
 import java.util.List;
@@ -21,6 +23,24 @@ public class BookRepositoryJPA implements BookRepository {
     public List<Book> getAll() {
         return entityManager.createQuery(
                 "select b from Book b join fetch b.author join fetch b.genre", Book.class).getResultList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Book> getByAuthor(Author author) {
+        return entityManager.createQuery(
+                "select b from Book b " +
+                        "join fetch b.author join fetch b.genre where b.author = :author", Book.class)
+                .setParameter("author", author).getResultList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Book> getByGenre(Genre genre) {
+        return entityManager.createQuery(
+                        "select b from Book b " +
+                                "join fetch b.author join fetch b.genre where b.genre = :genre", Book.class)
+                .setParameter("genre", genre).getResultList();
     }
 
     @Override
@@ -54,8 +74,7 @@ public class BookRepositoryJPA implements BookRepository {
 
     @Transactional
     @Override
-    public void deleteById(long id) {
-        entityManager.createQuery("delete from Book b where b.id = :id")
-                .setParameter("id", id).executeUpdate();
+    public void delete(Book book) {
+        entityManager.remove(book);
     }
 }

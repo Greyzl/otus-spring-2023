@@ -113,13 +113,18 @@ public class BookCommands {
     }
 
     @ShellMethod(value = "Delete author by id", key = {"book-delete", "bd"})
-    public String deleteAuthor(@ShellOption({"-i", "--id"}) long id){
-        bookService.deleteById(id);
-        return "Author successfully deleted";
+    public String deleteBook(@ShellOption({"-i", "--id"}) long id){
+        try {
+            var book = bookService.get(id).orElseThrow(BookNotFoundException::new);
+            bookService.delete(book);
+            return "Author successfully deleted";
+        } catch (BookNotFoundException e) {
+            return "Book with such id is not found";
+        }
     }
 
     @ShellMethod(value = "Add comment to book", key = {"Book-comment-add", "bca"})
-    public String addComment(@ShellOption({"-i", "--bookId"}) long bookId,
+    public String addBookComment(@ShellOption({"-i", "--bookId"}) long bookId,
                              @ShellOption({"-c", "--comment"}) String commentText){
         try {
             var book = bookService.get(bookId).orElseThrow(BookNotFoundException::new);
@@ -145,7 +150,7 @@ public class BookCommands {
     }
 
     @ShellMethod(value = "Delete book comment", key = {"Book-comment-delete", "bcd"})
-    public String deleteComment(@ShellOption({"-i", "--bookId"}) long bookId,
+    public String deleteBookComment(@ShellOption({"-i", "--bookId"}) long bookId,
                              @ShellOption({"-ci", "--commentIndex"}) int commentIndex){
         try {
             commentIndex--;

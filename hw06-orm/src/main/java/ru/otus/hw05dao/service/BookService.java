@@ -24,7 +24,7 @@ public interface BookService {
 
     Book update(Book book, String title, String authorName, String genreName);
 
-    void deleteById(long id);
+    void delete(Book book);
 
     void addComment(Book book, String commentText);
 

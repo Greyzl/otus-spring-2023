@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.hw05dao.entity.Author;
 import ru.otus.hw05dao.entity.Book;
+import ru.otus.hw05dao.entity.Comment;
 import ru.otus.hw05dao.entity.Genre;
 import ru.otus.hw05dao.persistance.repository.jpa.BookRepositoryJPA;
 
@@ -63,16 +64,29 @@ class BookRepositoryJpaTest {
     void givenIdWhenGetByIdThenReturnBook() {
         Genre genre1 = new Genre(1,"test genre 1");
         Author author1 = new Author(1, "test author 1");
-        Book book1 = new Book(1, "test title book 1", author1, genre1, new ArrayList<>());
+        Comment comment1 = new Comment(1, "FIRST COMMENT");
+        Comment comment2 = new Comment(2, "SECOND COMMENT");
+        List<Comment> comments = new ArrayList<>();
+        comments.add(comment1);
+        comments.add(comment2);
+        Book book1 = new Book(1, "test title book 1", author1, genre1, comments);
 
         Book resultBook = bookRepositoryJPA.getById(1).orElseThrow();
+        Author resultAuthor = resultBook.getAuthor();
+        Genre resultGenre = resultBook.getGenre();
+        List<Comment> resultComments = resultBook.getComments();
+
         assertEquals(book1, resultBook);
+        assertEquals(author1, resultAuthor);
+        assertEquals(genre1, resultGenre);
+        assertIterableEquals(comments, resultComments);
     }
 
     @Test
     void givenTitleWhenFindByTitleThenReturnBook() {
         Genre genre1 = new Genre(1,"test genre 1");
         Author author2 = new Author(2, "test author 2");
+        Comment comment3 = new Comment(3, "THIRD COMMENT");
         Book book2 = new Book(2, "test title book 2", author2, genre1, new ArrayList<>());
 
         Book resultBook = bookRepositoryJPA.findByTitle("test title book 2").orElseThrow();
@@ -113,7 +127,8 @@ class BookRepositoryJpaTest {
 
     @Test
     void givenIdWhenDeleteThenDeleted() {
-        bookRepositoryJPA.deleteById(1);
+        var book  = bookRepositoryJPA.getById(1).orElseThrow();
+        bookRepositoryJPA.delete(book);
         assertTrue(bookRepositoryJPA.getById(1).isEmpty());
     }
 }
