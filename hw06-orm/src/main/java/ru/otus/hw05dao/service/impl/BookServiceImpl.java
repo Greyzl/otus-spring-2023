@@ -97,8 +97,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Comment> getBookCommentById(Book book, long commentId) {
-        return book.getComments().stream().filter(comment -> comment.getId() == commentId).findFirst();
+    public Optional<Comment> getBookCommentByIndex(Book book, int commentIndex) {
+        try {
+            return Optional.ofNullable(book.getComments().get(commentIndex));
+        } catch (IndexOutOfBoundsException e){
+            return Optional.empty();
+        }
     }
 
     @Override

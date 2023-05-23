@@ -28,9 +28,9 @@ public interface BookService {
 
     void addComment(Book book, String commentText);
 
-    Optional<Comment> getBookCommentById(Book book, long commentId);
+    Optional<Comment> getBookCommentByIndex(Book book, int commentIndex);
 
     List<Comment> getBookComments(Book book);
 
-    void removeComment(Book book, Comment id);
+    void removeComment(Book book, Comment comment);
 }

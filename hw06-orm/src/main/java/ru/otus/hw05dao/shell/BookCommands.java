@@ -134,7 +134,7 @@ public class BookCommands {
     public String getBookComments(@ShellOption({"-i", "--bookId"}) long bookId){
         try {
             var book = bookService.get(bookId).orElseThrow(BookNotFoundException::new);
-            var comments = book.getComments();
+            var comments = bookService.getBookComments(book);
             if (comments.size() == 0){
                 return "Comments are not found";
             }
@@ -146,15 +146,18 @@ public class BookCommands {
 
     @ShellMethod(value = "Delete book comment", key = {"Book-comment-delete", "bcd"})
     public String deleteComment(@ShellOption({"-i", "--bookId"}) long bookId,
-                             @ShellOption({"-ci", "--commentId"}) long commentId){
+                             @ShellOption({"-ci", "--commentIndex"}) int commentIndex){
         try {
+            commentIndex--;
             var book = bookService.get(bookId).orElseThrow(BookNotFoundException::new);
-            var searchedComment = bookService.getBookCommentById(book,
-                    commentId).orElseThrow(CommentNotFoundException::new);
+            var searchedComment = bookService.getBookCommentByIndex(book,
+                    commentIndex).orElseThrow(CommentNotFoundException::new);
             bookService.removeComment(book, searchedComment);
             return "Comment successfully deleted";
         } catch (BookNotFoundException e){
             return "Book with such id is not found";
+        } catch (CommentNotFoundException e){
+            return "Comment with such index is not found";
         }
     }
 

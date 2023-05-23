@@ -12,13 +12,11 @@ public class CommentFormatterImpl implements CommentFormatter {
     @Override
     public String format(List<Comment> comments) {
         var builder = new StringBuilder();
+        int index = 0;
         for (Comment comment: comments){
-            builder.append(format(comment)).append("\n");
+            ++ index;
+            builder.append(String.format("%d. %s", index, comment.getText())).append("\n");
         }
         return builder.toString();
-    }
-
-    private String format(Comment comment){
-        return String.format("%d. %s", comment.getId(), comment.getText());
     }
 }

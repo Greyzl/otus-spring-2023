@@ -44,11 +44,11 @@ class BookServiceImplTest {
         Author author2 = new Author(2, "Test author 2");
         Genre genre1 = new Genre(1, "Test genre 1");
         Genre genre2 = new Genre(2, "Test genre 2");
-        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1);
-        Book book2 = new Book(2, "Test book 2, author_2, genre_1", author2, genre1);
-        Book book3 = new Book(3, "Test book 3, author_1, genre_2", author1, genre2);
-        Book book4 = new Book(3, "Test book 4, author_1, genre_1", author1, genre2);
-        Book book5 = new Book(3, "Test book 5, author_2, genre_2", author1, genre2);
+        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
+        Book book2 = new Book(2, "Test book 2, author_2, genre_1", author2, genre1, new ArrayList<>());
+        Book book3 = new Book(3, "Test book 3, author_1, genre_2", author1, genre2, new ArrayList<>());
+        Book book4 = new Book(3, "Test book 4, author_1, genre_1", author1, genre2, new ArrayList<>());
+        Book book5 = new Book(3, "Test book 5, author_2, genre_2", author1, genre2, new ArrayList<>());
 
         List<Book> books = new ArrayList<>();
         books.add(book1);
@@ -88,9 +88,9 @@ class BookServiceImplTest {
 
         Genre genre1 = new Genre(1, "Test genre 1");
         Genre genre2 = new Genre(2, "Test genre 2");
-        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1);
-        Book book2 = new Book(2, "Test book 2, author_1, genre_2", author1, genre2);
-        Book book3 = new Book(3, "Test book 3, author_1, genre_1", author1, genre2);
+        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
+        Book book2 = new Book(2, "Test book 2, author_1, genre_2", author1, genre2, new ArrayList<>());
+        Book book3 = new Book(3, "Test book 3, author_1, genre_1", author1, genre2, new ArrayList<>());
 
         List<Book> books = new ArrayList<>();
         books.add(book1);
@@ -133,9 +133,9 @@ class BookServiceImplTest {
         Genre genre1 = new Genre(1, "Test genre 1");
         var mayBeGenre = Optional.of(genre1);
 
-        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1);
-        Book book2 = new Book(2, "Test book 2, author_1, genre_2", author2, genre1);
-        Book book3 = new Book(3, "Test book 3, author_1, genre_1", author1, genre1);
+        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
+        Book book2 = new Book(2, "Test book 2, author_1, genre_2", author2, genre1, new ArrayList<>());
+        Book book3 = new Book(3, "Test book 3, author_1, genre_1", author1, genre1, new ArrayList<>());
 
         List<Book> books = new ArrayList<>();
         books.add(book1);
@@ -176,7 +176,7 @@ class BookServiceImplTest {
         long id = 1;
         Author author1 = new Author(1, "Test author 1");
         Genre genre1 = new Genre(1, "Test genre 1");
-        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1);
+        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
         var optionalBook1 = Optional.of(book1);
 
         Author expectedAuthor = author1.toBuilder().build();
@@ -202,7 +202,7 @@ class BookServiceImplTest {
         String title = "Test book 1, author_1, genre_1";
         Author author1 = new Author(1, "Test author 1");
         Genre genre1 = new Genre(1, "Test genre 1");
-        Book book1 = new Book(1, title, author1, genre1);
+        Book book1 = new Book(1, title, author1, genre1, new ArrayList<>());
         var optionalBook1 = Optional.of(book1);
 
         Author expectedAuthor = author1.toBuilder().build();
@@ -232,7 +232,7 @@ class BookServiceImplTest {
         Author author1 = new Author(1, authorName);
         Genre genre1 = new Genre(1, genreName);
         Book book1 = new Book(titleName, author1, genre1);
-        Book withId = new Book(1, titleName, author1, genre1);
+        Book withId = new Book(1, titleName, author1, genre1, new ArrayList<>());
 
         Mockito.when(authorService.getOrCreate(authorName)).thenReturn(author1);
         Mockito.when(genreService.getOrCreate(genreName)).thenReturn(genre1);
@@ -255,11 +255,11 @@ class BookServiceImplTest {
 
         Author oldAuthor = new Author(1, oldAuthorName);
         Genre oldGenre = new Genre(1, oldGenreName);
-        Book oldBook = new Book(1, oldTitleName, oldAuthor, oldGenre);
+        Book oldBook = new Book(1, oldTitleName, oldAuthor, oldGenre, new ArrayList<>());
 
         Author newAuthor = new Author(2, newAuthorName);
         Genre newGenre = new Genre(2, newGenreName);
-        Book newBook = new Book(1, newTitleName, newAuthor, newGenre);
+        Book newBook = new Book(1, newTitleName, newAuthor, newGenre, new ArrayList<>());
 
         Mockito.when(authorService.getOrCreate(newAuthorName)).thenReturn(newAuthor);
         Mockito.when(genreService.getOrCreate(newGenreName)).thenReturn(newGenre);

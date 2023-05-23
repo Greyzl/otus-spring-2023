@@ -37,12 +37,12 @@ class BookRepositoryJpaTest {
         Author author4 = new Author(4, "test author 4");
         Genre genre1 = new Genre(1,"test genre 1");
         Genre genre2 = new Genre(2,"test genre 2");
-        Book book1 = new Book(1, "test title book 1", author1, genre1);
-        Book book2 = new Book(2, "test title book 2", author2, genre1);
-        Book book3 = new Book(3, "test title book 3", author2, genre2);
-        Book book4 = new Book(4, "test title book 4", author3, genre2);
-        Book book5 = new Book(5, "test title book 5", author4, genre2);
-        Book book6 = new Book(6, "test title book 6", author3, genre1);
+        Book book1 = new Book(1, "test title book 1", author1, genre1, new ArrayList<>());
+        Book book2 = new Book(2, "test title book 2", author2, genre1, new ArrayList<>());
+        Book book3 = new Book(3, "test title book 3", author2, genre2, new ArrayList<>());
+        Book book4 = new Book(4, "test title book 4", author3, genre2, new ArrayList<>());
+        Book book5 = new Book(5, "test title book 5", author4, genre2, new ArrayList<>());
+        Book book6 = new Book(6, "test title book 6", author3, genre1, new ArrayList<>());
         List<Book> books = new ArrayList<>();
         books.add(book1);
         books.add(book2);
@@ -63,7 +63,7 @@ class BookRepositoryJpaTest {
     void givenIdWhenGetByIdThenReturnBook() {
         Genre genre1 = new Genre(1,"test genre 1");
         Author author1 = new Author(1, "test author 1");
-        Book book1 = new Book(1, "test title book 1", author1, genre1);
+        Book book1 = new Book(1, "test title book 1", author1, genre1, new ArrayList<>());
 
         Book resultBook = bookRepositoryJPA.getById(1).orElseThrow();
         assertEquals(book1, resultBook);
@@ -73,7 +73,7 @@ class BookRepositoryJpaTest {
     void givenTitleWhenFindByTitleThenReturnBook() {
         Genre genre1 = new Genre(1,"test genre 1");
         Author author2 = new Author(2, "test author 2");
-        Book book2 = new Book(2, "test title book 2", author2, genre1);
+        Book book2 = new Book(2, "test title book 2", author2, genre1, new ArrayList<>());
 
         Book resultBook = bookRepositoryJPA.findByTitle("test title book 2").orElseThrow();
         assertEquals(book2, resultBook);
@@ -84,7 +84,7 @@ class BookRepositoryJpaTest {
         Genre genre1 = new Genre(1,"test genre 1");
         Author author2 = new Author(2, "test author 2");
         Book newBook = new Book("new Test book title", author2, genre1);
-        Book exptectedBook = new Book(7, "new Test book title", author2, genre1);
+        Book exptectedBook = new Book(7, "new Test book title", author2, genre1, new ArrayList<>());
 
         Book insertedBook = bookRepositoryJPA.save(newBook);
         assertEquals(exptectedBook, insertedBook);
@@ -99,11 +99,12 @@ class BookRepositoryJpaTest {
     void givenNewBookWhenUpdateThenSaved() {
         Author author2 = new Author(2, "test author 2");
         Genre genre2 = new Genre(2,"test genre 2");
-        Book newBook = new Book(1, "new book title", author2, genre2);
+        Book newBook = new Book(1, "new book title", author2, genre2, new ArrayList<>());
 
         bookRepositoryJPA.save(newBook);
 
         entityManager.detach(newBook);
+
         Book resultedBook = bookRepositoryJPA.getById(1).orElseThrow();
 
         assertEquals(resultedBook, newBook);
