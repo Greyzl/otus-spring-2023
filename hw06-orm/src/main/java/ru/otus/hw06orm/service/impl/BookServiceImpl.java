@@ -1,7 +1,7 @@
 package ru.otus.hw06orm.service.impl;
 
 import org.springframework.stereotype.Service;
-import ru.otus.hw06orm.builder.BookBuilder;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw06orm.entity.Book;
 import ru.otus.hw06orm.entity.Comment;
 import ru.otus.hw06orm.exception.AuthorNotFoundException;
@@ -31,33 +31,39 @@ public class BookServiceImpl implements BookService {
         this.genreService = genreService;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Book> getAll() {
         return bookRepository.getAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Book> findByAuthorName(String authorName) throws AuthorNotFoundException{
         var author = authorService.findByName(authorName).orElseThrow(AuthorNotFoundException::new);
         return bookRepository.findByAuthor(author);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Book> findByGenreName(String genreName) throws GenreNotFoundException {
         var genre = genreService.getByName(genreName).orElseThrow(GenreNotFoundException::new);
         return bookRepository.findByGenre(genre);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Book> get(long id) {
         return bookRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Book> findByTitle(String title) {
         return bookRepository.findByTitle(title);
     }
 
+    @Transactional
     @Override
     public Book add(String title, String authorName, String genreName) {
         var author = authorService.getOrCreate(authorName);
@@ -66,28 +72,28 @@ public class BookServiceImpl implements BookService {
         return bookRepository.save(newBook);
     }
 
+    @Transactional
     @Override
     public Book update(Book book, String newTitle, String newAuthorName, String newGenreName) {
-        BookBuilder builder = book.toBuilder();
-        builder.setTitle(newTitle);
+        book.setTitle(newTitle);
         if (!newAuthorName.equals("")){
             var author = authorService.getOrCreate(newAuthorName);
-            builder.setAuthor(author);
+            book.setAuthor(author);
         }
         if (!newGenreName.equals("")){
             var genre = genreService.getOrCreate(newGenreName);
-            builder.setGenre(genre);
+            book.setGenre(genre);
         }
-        Book buildedBook = builder.build();
-        bookRepository.save(buildedBook);
-        return buildedBook;
+        return bookRepository.save(book);
     }
 
+    @Transactional
     @Override
     public void delete(Book book) {
         bookRepository.delete(book);
     }
 
+    @Transactional
     @Override
     public void addComment(Book book, String commentText) {
         Comment newComment = new Comment(commentText);
@@ -96,6 +102,7 @@ public class BookServiceImpl implements BookService {
         bookRepository.save(book);
     }
 
+    @Transactional
     @Override
     public Optional<Comment> getBookCommentByIndex(Book book, int commentIndex) {
         try {
@@ -105,11 +112,13 @@ public class BookServiceImpl implements BookService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Comment> getBookComments(Book book) {
         return book.getComments();
     }
 
+    @Transactional
     @Override
     public void removeComment(Book book, Comment comment) {
         List<Comment> comments = book.getComments();

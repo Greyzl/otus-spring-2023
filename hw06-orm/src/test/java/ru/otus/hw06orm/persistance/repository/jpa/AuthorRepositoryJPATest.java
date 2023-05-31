@@ -2,7 +2,6 @@ package ru.otus.hw06orm.persistance.repository.jpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
@@ -14,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(AuthorRepositoryJPA.class)
 class AuthorRepositoryJPATest {
 
@@ -65,8 +63,8 @@ class AuthorRepositoryJPATest {
     @Test
     void givenAuthorWithIdWhenSaveThenNewNameCorrect() {
         var author = authorRepositoryJPA.findById(2).orElseThrow();
-        var authorWithNewName = author.toBuilder().setName("New name author 2").build();
-        var updatedAuthor = authorRepositoryJPA.save(authorWithNewName);
+        author.setName("New name author 2");
+        var updatedAuthor = authorRepositoryJPA.save(author);
         entityManager.flush();
         entityManager.detach(updatedAuthor);
 

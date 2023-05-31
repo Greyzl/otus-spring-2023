@@ -11,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import ru.otus.hw06orm.builder.BookBuilder;
 
 import java.util.List;
 import java.util.Objects;
@@ -59,24 +58,36 @@ public class Book {
         return id;
     }
 
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Author getAuthor() {
         return author;
     }
 
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
     public Genre getGenre() {
         return genre;
     }
 
-    public List<Comment> getComments() {
-        return comments;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
-    public BookBuilder toBuilder(){
-        return new BookBuilder(id, title, author, genre, comments);
+    public List<Comment> getComments() {
+        return comments;
     }
 
     @Override

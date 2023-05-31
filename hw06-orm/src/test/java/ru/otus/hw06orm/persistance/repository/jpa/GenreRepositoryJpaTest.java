@@ -2,7 +2,6 @@ package ru.otus.hw06orm.persistance.repository.jpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
@@ -14,7 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(GenreRepositoryJpa.class)
 class GenreRepositoryJpaTest {
 
@@ -65,8 +63,8 @@ class GenreRepositoryJpaTest {
     @Test
     void givenAuthorWithIdWhenSaveThenNewNameCorrect() {
         var genre = genreRepositoryJpa.getById(2).orElseThrow();
-        var genreWithNewName = genre.toBuilder().setName("New name genre 2").build();
-        var updatedGenre = genreRepositoryJpa.save(genreWithNewName);
+        genre.setName("New name genre 2");
+        var updatedGenre = genreRepositoryJpa.save(genre);
         entityManager.flush();
         entityManager.detach(updatedGenre);
 

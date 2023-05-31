@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import ru.otus.hw06orm.builder.AuthorBuilder;
 
 @Entity
 @Table(name = "AUTHORS")
@@ -46,10 +45,6 @@ public class Author {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public AuthorBuilder toBuilder(){
-        return new AuthorBuilder(id, name);
     }
 
     @Override

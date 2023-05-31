@@ -3,7 +3,6 @@ package ru.otus.hw06orm.persistance.repository.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw06orm.entity.Author;
 import ru.otus.hw06orm.entity.Book;
 import ru.otus.hw06orm.entity.Genre;
@@ -18,15 +17,17 @@ public class BookRepositoryJPA implements BookRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    public BookRepositoryJPA(EntityManager entityManager){
+        this.entityManager = entityManager;
+    }
+
     @Override
-    @Transactional(readOnly = true)
     public List<Book> getAll() {
         return entityManager.createQuery(
                 "select b from Book b join fetch b.author join fetch b.genre", Book.class).getResultList();
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Book> findByAuthor(Author author) {
         return entityManager.createQuery(
                 "select b from Book b " +
@@ -35,7 +36,6 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<Book> findByGenre(Genre genre) {
         return entityManager.createQuery(
                         "select b from Book b " +
@@ -44,7 +44,6 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Optional<Book> findById(long id) {
         return entityManager.createQuery(
                         "select b from Book b join fetch b.author a join fetch b.genre g " +
@@ -53,7 +52,6 @@ public class BookRepositoryJPA implements BookRepository {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public Optional<Book> findByTitle(String name) {
         return entityManager.createQuery(
                 "select b from Book b join fetch b.author join fetch b.genre " +
@@ -61,18 +59,15 @@ public class BookRepositoryJPA implements BookRepository {
                 .setParameter("title",name).getResultList().stream().findFirst();
     }
 
-    @Transactional
     @Override
     public Book save(Book book) {
         if (book.getId() == 0){
-            Book bookWithId = book.toBuilder().build();
-            entityManager.persist(bookWithId);
-            return bookWithId;
+            entityManager.persist(book);
+            return book;
         }
         return entityManager.merge(book);
     }
 
-    @Transactional
     @Override
     public void delete(Book book) {
         entityManager.remove(book);

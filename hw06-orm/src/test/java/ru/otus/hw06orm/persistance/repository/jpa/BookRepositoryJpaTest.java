@@ -2,7 +2,6 @@ package ru.otus.hw06orm.persistance.repository.jpa;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
@@ -17,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(BookRepositoryJPA.class)
 class BookRepositoryJpaTest {
 
@@ -113,10 +111,12 @@ class BookRepositoryJpaTest {
         var book = bookRepositoryJPA.findById(1).orElseThrow();
         var newAuthor = new Author(2, "test author 2");
         var newGenre = new Genre(2, "new Genre 2");
-        var newBook = book.toBuilder().setTitle("NewBook Title").setAuthor(newAuthor).setGenre(newGenre).build();
-        bookRepositoryJPA.save(newBook);
+        book.setTitle("NewBook Title");
+        book.setAuthor(newAuthor);
+        book.setGenre(newGenre);
+        bookRepositoryJPA.save(book);
         entityManager.flush();
-        entityManager.detach(newBook);
+        entityManager.detach(book);
 
         Book resultBook = bookRepositoryJPA.findById(1).orElseThrow();
         Author resultAuthor = resultBook.getAuthor();

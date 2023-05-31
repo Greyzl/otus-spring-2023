@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -40,9 +39,8 @@ class BookServiceImplTest {
     @Autowired
     private BookService bookService;
 
-
     @Test
-    void whenGetAllThenReturnBooks() {
+    void whenGetAllThenReturnCorrectCount() {
         Author author1 = new Author(1, "Test author 1");
         Author author2 = new Author(2, "Test author 2");
         Genre genre1 = new Genre(1, "Test genre 1");
@@ -50,8 +48,8 @@ class BookServiceImplTest {
         Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
         Book book2 = new Book(2, "Test book 2, author_2, genre_1", author2, genre1, new ArrayList<>());
         Book book3 = new Book(3, "Test book 3, author_1, genre_2", author1, genre2, new ArrayList<>());
-        Book book4 = new Book(3, "Test book 4, author_1, genre_1", author1, genre2, new ArrayList<>());
-        Book book5 = new Book(3, "Test book 5, author_2, genre_2", author1, genre2, new ArrayList<>());
+        Book book4 = new Book(4, "Test book 4, author_1, genre_1", author1, genre2, new ArrayList<>());
+        Book book5 = new Book(5, "Test book 5, author_2, genre_2", author1, genre2, new ArrayList<>());
 
         List<Book> books = new ArrayList<>();
         books.add(book1);
@@ -61,30 +59,34 @@ class BookServiceImplTest {
         books.add(book5);
         Mockito.when(bookRepository.getAll()).thenReturn(books);
 
-        Author expectedAuthor1 = author1.toBuilder().build();
-        Author expectedAuthor2 = author2.toBuilder().build();
-        Genre expectedGenre1 = genre1.toBuilder().build();
-        Genre expectedGenre2 = genre2.toBuilder().build();
-        Book expectedBook1 = book1.toBuilder().setAuthor(expectedAuthor1).setGenre(expectedGenre1).build();
-        Book expectedBook2 = book2.toBuilder().setAuthor(expectedAuthor2).setGenre(expectedGenre1).build();
-        Book expectedBook3 = book3.toBuilder().setAuthor(expectedAuthor1).setGenre(expectedGenre2).build();
-        Book expectedBook4 = book4.toBuilder().setAuthor(expectedAuthor1).setGenre(expectedGenre1).build();
-        Book expectedBook5 = book5.toBuilder().setAuthor(expectedAuthor2).setGenre(expectedGenre2).build();
-
-        List<Book> expectedBooks = new ArrayList<>();
-        expectedBooks.add(expectedBook1);
-        expectedBooks.add(expectedBook2);
-        expectedBooks.add(expectedBook3);
-        expectedBooks.add(expectedBook4);
-        expectedBooks.add(expectedBook5);
-
-
         List<Book> booksTested = bookService.getAll();
-        assertIterableEquals(expectedBooks, booksTested);
+        assertEquals(5, booksTested.size());
+
     }
 
     @Test
-    void givenAuthorWhenFindByAuthorThenReturnBooksByAuthor() {
+    void whenGetAllThenReturnCorrectBook() {
+        Author author1 = new Author(1, "Test author 1");
+        Author author2 = new Author(2, "Test author 2");
+        Genre genre1 = new Genre(1, "Test genre 1");
+        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
+        Book book2 = new Book(2, "Test book 2, author_2, genre_1", author2, genre1, new ArrayList<>());
+
+        List<Book> books = new ArrayList<>();
+        books.add(book1);
+        books.add(book2);
+        Mockito.when(bookRepository.getAll()).thenReturn(books);
+
+        List<Book> booksTested = bookService.getAll();
+        var book = booksTested.get(0);
+        assertEquals(1, book.getId());
+        assertEquals("Test book 1, author_1, genre_1", book.getTitle());
+        assertEquals("Test author 1", book.getAuthor().getName());
+        assertEquals("Test genre 1", book.getGenre().getName());
+    }
+
+    @Test
+    void givenAuthorWhenFindByAuthorThenReturnCorrectCount() {
         Author author1 = new Author(1, "Test author 1");
 
         var mayBeAuthor = Optional.of(author1);
@@ -100,24 +102,36 @@ class BookServiceImplTest {
         books.add(book2);
         books.add(book3);
 
-        Author expectedAuthor1 = author1.toBuilder().build();
-        Genre expectedGenre1 = genre1.toBuilder().build();
-        Genre expectedGenre2 = genre2.toBuilder().build();
-        Book expectedBook1 = book1.toBuilder().setAuthor(expectedAuthor1).setGenre(expectedGenre1).build();
-        Book expectedBook2 = book2.toBuilder().setAuthor(expectedAuthor1).setGenre(expectedGenre2).build();
-        Book expectedBook3 = book3.toBuilder().setAuthor(expectedAuthor1).setGenre(expectedGenre1).build();
-
-        List<Book> expectedBooks = new ArrayList<>();
-        expectedBooks.add(expectedBook1);
-        expectedBooks.add(expectedBook2);
-        expectedBooks.add(expectedBook3);
-
-        String authorName = "Test author";
+        String authorName = "Test author 1";
         Mockito.when(authorService.findByName(authorName)).thenReturn(mayBeAuthor);
         Mockito.when(bookRepository.findByAuthor(author1)).thenReturn(books);
 
         List<Book> resultBooks = bookService.findByAuthorName(authorName);
-        assertIterableEquals(expectedBooks, resultBooks);
+        assertEquals(3, resultBooks.size());
+    }
+
+    @Test
+    void givenAuthorWhenFindByAuthorThenReturnCorrectBook() {
+        Author author1 = new Author(1, "Test author 1");
+        Genre genre1 = new Genre(1, "Test genre 1");
+        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
+        Book book2 = new Book(2, "Test book 2, author_1, genre_1", author1, genre1, new ArrayList<>());
+
+        var mayBeAuthor = Optional.of(author1);
+        List<Book> books = new ArrayList<>();
+        books.add(book1);
+        books.add(book2);
+
+        String authorName = "Test author 1";
+        Mockito.when(authorService.findByName(authorName)).thenReturn(mayBeAuthor);
+        Mockito.when(bookRepository.findByAuthor(author1)).thenReturn(books);
+
+        List<Book> resultBooks = bookService.findByAuthorName(authorName);
+        var book = resultBooks.get(1);
+        assertEquals(2, book.getId());
+        assertEquals("Test book 2, author_1, genre_1", book.getTitle());
+        assertEquals("Test author 1", book.getAuthor().getName());
+        assertEquals("Test genre 1", book.getGenre().getName());
     }
 
     @Test
@@ -129,40 +143,51 @@ class BookServiceImplTest {
     }
 
     @Test
-    void givenGenreWhenFindByGenreThenReturnBooksByGenre() {
+    void givenGenreWhenFindByGenreThenReturnCorrectCount() {
         Author author1 = new Author(1, "Test author 1");
-        Author author2 = new Author(1, "Test author 2");
 
         Genre genre1 = new Genre(1, "Test genre 1");
         var mayBeGenre = Optional.of(genre1);
 
         Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
-        Book book2 = new Book(2, "Test book 2, author_1, genre_2", author2, genre1, new ArrayList<>());
         Book book3 = new Book(3, "Test book 3, author_1, genre_1", author1, genre1, new ArrayList<>());
 
         List<Book> books = new ArrayList<>();
         books.add(book1);
-        books.add(book2);
         books.add(book3);
 
-        Author expectedAuthor1 = author1.toBuilder().build();
-        Author expectedAuthor2 = author2.toBuilder().build();
-        Genre expectedGenre1 = genre1.toBuilder().build();
-        Book expectedBook1 = book1.toBuilder().setAuthor(expectedAuthor1).setGenre(expectedGenre1).build();
-        Book expectedBook2 = book2.toBuilder().setAuthor(expectedAuthor2).setGenre(expectedGenre1).build();
-        Book expectedBook3 = book3.toBuilder().setAuthor(expectedAuthor1).setGenre(expectedGenre1).build();
-
-        List<Book> expectedBooks = new ArrayList<>();
-        expectedBooks.add(expectedBook1);
-        expectedBooks.add(expectedBook2);
-        expectedBooks.add(expectedBook3);
-
-        String genreName = "Test genre";
+        String genreName = "Test genre 1";
         Mockito.when(genreService.getByName(genreName)).thenReturn(mayBeGenre);
         Mockito.when(bookRepository.findByGenre(genre1)).thenReturn(books);
 
         List<Book> resultBooks = bookService.findByGenreName(genreName);
-        assertIterableEquals(expectedBooks, resultBooks);
+        assertEquals(2, resultBooks.size());
+    }
+
+    @Test
+    void givenGenreWhenFindByGenreThenReturnCorrectBook() {
+        Author author1 = new Author(1, "Test author 1");
+
+        Genre genre1 = new Genre(1, "Test genre 1");
+        var mayBeGenre = Optional.of(genre1);
+
+        Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
+        Book book3 = new Book(3, "Test book 3, author_1, genre_1", author1, genre1, new ArrayList<>());
+
+        List<Book> books = new ArrayList<>();
+        books.add(book1);
+        books.add(book3);
+
+        String genreName = "Test genre 1";
+        Mockito.when(genreService.getByName(genreName)).thenReturn(mayBeGenre);
+        Mockito.when(bookRepository.findByGenre(genre1)).thenReturn(books);
+
+        List<Book> resultBooks = bookService.findByGenreName(genreName);
+        var book = resultBooks.get(1);
+        assertEquals(3, book.getId());
+        assertEquals("Test book 3, author_1, genre_1", book.getTitle());
+        assertEquals("Test author 1", book.getAuthor().getName());
+        assertEquals("Test genre 1", book.getGenre().getName());
     }
 
     @Test
@@ -181,14 +206,13 @@ class BookServiceImplTest {
         Book book1 = new Book(1, "Test book 1, author_1, genre_1", author1, genre1, new ArrayList<>());
         var optionalBook1 = Optional.of(book1);
 
-        Author expectedAuthor = author1.toBuilder().build();
-        Genre expectedGenre = genre1.toBuilder().build();
-        Book expectedBook = book1.toBuilder().setAuthor(expectedAuthor).setGenre(expectedGenre).build();
-
         Mockito.when(bookRepository.findById(id)).thenReturn(optionalBook1);
 
         Book resultBook = bookService.get(id).orElseThrow();
-        assertEquals(expectedBook, resultBook);
+        assertEquals(1, resultBook.getId());
+        assertEquals("Test author 1", resultBook.getAuthor().getName());
+        assertEquals("Test genre 1", resultBook.getGenre().getName());
+        assertEquals("Test book 1, author_1, genre_1", resultBook.getTitle());
     }
 
     @Test
@@ -207,14 +231,13 @@ class BookServiceImplTest {
         Book book1 = new Book(1, title, author1, genre1, new ArrayList<>());
         var optionalBook1 = Optional.of(book1);
 
-        Author expectedAuthor = author1.toBuilder().build();
-        Genre expectedGenre = genre1.toBuilder().build();
-        Book expectedBook = book1.toBuilder().setAuthor(expectedAuthor).setGenre(expectedGenre).build();
-
         Mockito.when(bookRepository.findByTitle(title)).thenReturn(optionalBook1);
 
         Book resultBook = bookService.findByTitle(title).orElseThrow();
-        assertEquals(expectedBook, resultBook);
+        assertEquals(1, resultBook.getId());
+        assertEquals("Test author 1", resultBook.getAuthor().getName());
+        assertEquals("Test genre 1", resultBook.getGenre().getName());
+        assertEquals("Test book 1, author_1, genre_1", resultBook.getTitle());
     }
 
     @Test

@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import ru.otus.hw06orm.builder.GenreBuilder;
 
 import java.util.Objects;
 
@@ -47,10 +46,6 @@ public class Genre {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public GenreBuilder toBuilder(){
-        return new GenreBuilder(id, name);
     }
 
     @Override
