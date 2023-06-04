@@ -1,16 +1,16 @@
 package ru.otus.hw06orm.exception;
 
-import ru.otus.hw06orm.entity.Book;
+import ru.otus.hw06orm.dto.BookDto;
 
 public class BookAlreadyExistsException extends RuntimeException{
-    private final Book book;
+    private final BookDto bookDto;
 
-    public BookAlreadyExistsException(Book book) {
+    public BookAlreadyExistsException(BookDto bookDto) {
         super();
-        this.book = book;
+        this.bookDto = bookDto;
     }
 
-    public Book getBook() {
-        return book;
+    public BookDto getBookDto() {
+        return bookDto;
     }
 }

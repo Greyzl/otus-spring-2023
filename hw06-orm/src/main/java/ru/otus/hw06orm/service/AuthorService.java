@@ -1,23 +1,24 @@
 package ru.otus.hw06orm.service;
 
 import ru.otus.hw06orm.entity.Author;
+import ru.otus.hw06orm.exception.AuthorAlreadyExistsException;
+import ru.otus.hw06orm.exception.AuthorNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface AuthorService {
 
     List<Author> getAll();
 
-    Optional<Author> get(long id) ;
+    Author get(long id) throws AuthorNotFoundException;
 
-    Optional<Author> findByName(String name) ;
+    Author findByName(String name) throws AuthorNotFoundException;
 
     Author getOrCreate(String name);
 
-    Author add(String authorName);
+    Author add(String authorName) throws AuthorAlreadyExistsException;
 
-    Author update(Author author, String authorName);
+    Author update(long id, String authorName) throws AuthorNotFoundException;
 
-    void delete(Author author);
+    void delete(long id) throws AuthorNotFoundException;
 }

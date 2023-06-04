@@ -33,7 +33,7 @@ public class AuthorCommands {
     @ShellMethod(value = "Get book author by id", key = {"author-by-id", "abi"})
     public String getAuthor(long id){
         try {
-            var author = authorService.get(id).orElseThrow(AuthorNotFoundException::new);
+            var author = authorService.get(id);
             return authorFormatter.format(author);
         } catch (AuthorNotFoundException exception){
             return "Author with such id not found";
@@ -43,9 +43,6 @@ public class AuthorCommands {
     @ShellMethod(value = "Save entered name as author", key = {"author-add", "aa"})
     public String addAuthor(String name){
         try {
-            authorService.findByName(name).ifPresent(author -> {
-                throw new AuthorAlreadyExistsException(author);
-            });
             Author newAuthor = authorService.add(name);
             return "Author successfully saved. " + authorFormatter.format(newAuthor);
         } catch (AuthorAlreadyExistsException e){
@@ -56,8 +53,7 @@ public class AuthorCommands {
     @ShellMethod(value = "Update author name", key = {"author-update", "au"})
     public String updateAuthor(long id, String name){
         try {
-            Author author = authorService.get(id).orElseThrow(AuthorNotFoundException::new);
-            Author updatedAuthor = authorService.update(author, name);
+            Author updatedAuthor = authorService.update(id, name);
             return "Author successfully updated. " + authorFormatter.format(updatedAuthor);
         }catch (AuthorNotFoundException exception){
             return "Author with such id not found";
@@ -67,8 +63,7 @@ public class AuthorCommands {
     @ShellMethod(value = "Delete author by id", key = {"author-delete", "ad"})
     public String deleteAuthor(long id){
         try {
-            var author = authorService.get(id).orElseThrow(AuthorNotFoundException::new);
-            authorService.delete(author);
+            authorService.delete(id);
             return "Author successfully deleted";
         } catch (AuthorNotFoundException e){
             return "Author with such id is not found";

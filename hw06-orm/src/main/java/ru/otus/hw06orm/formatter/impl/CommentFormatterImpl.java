@@ -15,7 +15,8 @@ public class CommentFormatterImpl implements CommentFormatter {
         int index = 0;
         for (Comment comment: comments){
             ++ index;
-            builder.append(String.format("%d. %s", index, comment.getText())).append("\n");
+            builder.append(String.format("%d. id: %d, comment: %s", index, comment.getId(),
+                    comment.getText())).append("\n");
         }
         return builder.toString();
     }

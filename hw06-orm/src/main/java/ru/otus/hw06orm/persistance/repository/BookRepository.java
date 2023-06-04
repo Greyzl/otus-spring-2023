@@ -2,6 +2,7 @@ package ru.otus.hw06orm.persistance.repository;
 
 import ru.otus.hw06orm.entity.Author;
 import ru.otus.hw06orm.entity.Book;
+import ru.otus.hw06orm.entity.Comment;
 import ru.otus.hw06orm.entity.Genre;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface BookRepository {
     Book save(Book book);
 
     void delete(Book book);
+
+    List<Comment> getComments(long id);
 }

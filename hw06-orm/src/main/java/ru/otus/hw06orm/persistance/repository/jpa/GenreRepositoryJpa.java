@@ -1,6 +1,7 @@
 package ru.otus.hw06orm.persistance.repository.jpa;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw06orm.entity.Genre;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public class GenreRepositoryJpa implements GenreRepository {
 
     @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public GenreRepositoryJpa(EntityManager entityManager){
         this.entityManager = entityManager;
@@ -33,9 +34,13 @@ public class GenreRepositoryJpa implements GenreRepository {
 
     @Override
     public Optional<Genre> findByName(String name) {
-        return entityManager.createQuery(
-                "select g from Genre g where g.name = :name", Genre.class)
-                .setParameter("name", name).getResultList().stream().findFirst();
+        try {
+            return Optional.ofNullable(entityManager.createQuery(
+                            "select g from Genre g where g.name = :name", Genre.class)
+                    .setParameter("name", name).getSingleResult());
+        } catch (NoResultException e){
+            return Optional.empty();
+        }
     }
 
     @Override

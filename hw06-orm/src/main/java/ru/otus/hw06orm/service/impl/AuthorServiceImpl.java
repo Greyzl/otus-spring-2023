@@ -3,11 +3,12 @@ package ru.otus.hw06orm.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw06orm.entity.Author;
+import ru.otus.hw06orm.exception.AuthorAlreadyExistsException;
+import ru.otus.hw06orm.exception.AuthorNotFoundException;
 import ru.otus.hw06orm.persistance.repository.AuthorRepository;
 import ru.otus.hw06orm.service.AuthorService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -24,35 +25,44 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Author> get(long id) {
-        return authorRepository.findById(id);
+    public Author get(long id) {
+        return authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
     }
 
     @Transactional(readOnly = true)
-    public Optional<Author> findByName(String name) {
-        return authorRepository.findByName(name);
+    public Author findByName(String name) {
+        return authorRepository.findByName(name).orElseThrow(AuthorNotFoundException::new);
     }
 
     @Transactional
     @Override
     public Author getOrCreate(String name) {
-        return findByName(name).orElse(add(name));
+        try {
+            return findByName(name);
+        }catch (AuthorNotFoundException e){
+            return add(name);
+        }
     }
 
     @Transactional
-    public Author add(String authorName){
+    public Author add(String authorName) throws AuthorAlreadyExistsException{
+        authorRepository.findByName(authorName).ifPresent((author) -> {
+            throw new AuthorAlreadyExistsException(author);
+        });
         Author newAuthor = new Author(authorName);
         return authorRepository.save(newAuthor);
     }
 
     @Transactional
-    public Author update(Author author, String authorName){
+    public Author update(long id, String authorName) throws AuthorNotFoundException{
+        var author = authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
         author.setName(authorName);
         return authorRepository.save(author);
     }
 
     @Transactional
-    public void delete(Author author){
+    public void delete(long id){
+        var author = authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
         authorRepository.delete(author);
     }
 }

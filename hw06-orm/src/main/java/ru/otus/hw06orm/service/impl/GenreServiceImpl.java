@@ -3,11 +3,12 @@ package ru.otus.hw06orm.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw06orm.entity.Genre;
+import ru.otus.hw06orm.exception.GenreAlreadyExistsException;
+import ru.otus.hw06orm.exception.GenreNotFoundException;
 import ru.otus.hw06orm.persistance.repository.GenreRepository;
 import ru.otus.hw06orm.service.GenreService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -26,32 +27,41 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Genre> get(long id) {
-        return genreRepository.getById(id);
+    public Genre get(long id) throws GenreNotFoundException{
+        return genreRepository.getById(id).orElseThrow(GenreNotFoundException::new);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Optional<Genre> getByName(String name) {
-        return genreRepository.findByName(name);
+    public Genre getByName(String name) throws GenreNotFoundException {
+        return genreRepository.findByName(name).orElseThrow(GenreNotFoundException::new);
     }
 
     @Transactional
     @Override
     public Genre getOrCreate(String name) {
-        return getByName(name).orElse(add(name));
+        try {
+            return getByName(name);
+        } catch (GenreNotFoundException e){
+            return add(name);
+        }
     }
 
     @Transactional
     @Override
-    public Genre add(String name) {
+    public Genre add(String name) throws GenreAlreadyExistsException {
+        var mayBeGenre = genreRepository.findByName(name);
+        mayBeGenre.ifPresent(genre -> {
+            throw new GenreAlreadyExistsException(genre);
+        });
         Genre genre = new Genre(name);
         return genreRepository.save(genre);
     }
 
     @Transactional
     @Override
-    public Genre update(Genre genre, String name) {
+    public Genre update(long id, String name) throws GenreNotFoundException {
+        var genre = genreRepository.getById(id).orElseThrow(GenreNotFoundException::new);
         genre.setName(name);
         genreRepository.save(genre);
         return genre;
@@ -59,7 +69,8 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public void delete(Genre genre) {
+    public void delete(long id) {
+        var genre = genreRepository.getById(id).orElseThrow(GenreNotFoundException::new);
         genreRepository.delete(genre);
     }
 }

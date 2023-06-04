@@ -30,7 +30,7 @@ public class GenreCommands {
     @ShellMethod(value = "Get genre by it's id", key = {"genre-by-id", "gbi"})
     public String getGenreById(long id){
         try {
-            var genre = genreService.get(id).orElseThrow(GenreNotFoundException::new);
+            var genre = genreService.get(id);
             return genreFormatter.format(genre);
         }catch (GenreNotFoundException e){
             return "Genre with such id is not found";
@@ -40,9 +40,6 @@ public class GenreCommands {
     @ShellMethod(value = "Add new genre", key = {"genre-add", "ga"})
     public String addGenre(String name){
         try {
-            genreService.getByName(name).ifPresent(genre -> {
-                throw new GenreAlreadyExistsException(genre);
-            });
             Genre newGenre = genreService.add(name);
             return "Genre successfully added. " + genreFormatter.format(newGenre);
         } catch (GenreAlreadyExistsException e){
@@ -53,8 +50,7 @@ public class GenreCommands {
     @ShellMethod(value = "Update genre", key = {"genre-update", "gu"})
     public String updateGenre(long id, String name){
         try {
-            var genre = genreService.get(id).orElseThrow(GenreNotFoundException::new);
-            var updatedGenre = genreService.update(genre, name);
+            var updatedGenre = genreService.update(id, name);
             return "Genre successfully updated. " + genreFormatter.format(updatedGenre);
         }catch (GenreNotFoundException e){
             return "Genre with such id is not found";
@@ -64,9 +60,8 @@ public class GenreCommands {
     @ShellMethod(value = "Update delete", key = {"genre-delete", "gd"})
     public String deleteGenre(long id){
         try {
-            var genre = genreService.get(id).orElseThrow(GenreNotFoundException::new);
-            genreService.delete(genre);
-            return "Genre successfully deleted. " + genreFormatter.format(genre);
+            genreService.delete(id);
+            return "Genre successfully deleted. ";
         } catch (GenreNotFoundException e){
             return "Genre with such id is not found";
         }

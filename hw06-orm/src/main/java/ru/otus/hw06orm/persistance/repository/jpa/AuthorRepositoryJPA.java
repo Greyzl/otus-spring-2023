@@ -1,6 +1,7 @@
 package ru.otus.hw06orm.persistance.repository.jpa;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 import ru.otus.hw06orm.entity.Author;
@@ -32,9 +33,14 @@ public class AuthorRepositoryJPA implements AuthorRepository {
 
     @Override
     public Optional<Author> findByName(String name) {
-        return entityManager.createQuery(
-                "select a from Author a where a.name = :name", Author.class)
-                .setParameter("name", name).getResultList().stream().findFirst();
+        try {
+            return Optional.ofNullable(entityManager.createQuery(
+                            "select a from Author a where a.name = :name", Author.class)
+                    .setParameter("name", name).getSingleResult());
+        } catch (NoResultException e){
+            return Optional.empty();
+        }
+
     }
 
     @Override

@@ -156,6 +156,7 @@ class BookRepositoryJpaTest {
         comment.setBook(null);
 
         bookRepositoryJPA.save(book);
+        entityManager.flush();
         entityManager.detach(book);
 
         var updatedBook = bookRepositoryJPA.findById(1).orElseThrow();

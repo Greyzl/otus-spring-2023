@@ -1,36 +1,36 @@
 package ru.otus.hw06orm.service;
 
-import ru.otus.hw06orm.entity.Book;
+import ru.otus.hw06orm.dto.BookDto;
 import ru.otus.hw06orm.entity.Comment;
 import ru.otus.hw06orm.exception.AuthorNotFoundException;
+import ru.otus.hw06orm.exception.BookAlreadyExistsException;
+import ru.otus.hw06orm.exception.BookNotFoundException;
+import ru.otus.hw06orm.exception.CommentNotFoundException;
 import ru.otus.hw06orm.exception.GenreNotFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BookService {
 
-    List<Book> getAll();
+    List<BookDto> getAll();
 
-    List<Book> findByAuthorName(String authorName) throws AuthorNotFoundException;
+    List<BookDto> findByAuthorName(String authorName) throws AuthorNotFoundException;
 
-    List<Book> findByGenreName(String genreName) throws GenreNotFoundException;
+    List<BookDto> findByGenreName(String genreName) throws GenreNotFoundException;
 
-    Optional<Book> get(long id) ;
+    BookDto get(long id) throws BookNotFoundException;
 
-    Optional<Book> findByTitle(String title) ;
+    BookDto findByTitle(String title) throws BookNotFoundException;
 
-    Book add(String title, String authorName, String genreName);
+    BookDto add(String title, String authorName, String genreName) throws BookAlreadyExistsException;
 
-    Book update(Book book, String title, String authorName, String genreName);
+    BookDto update(long id, String title, String authorName, String genreName) throws BookNotFoundException;
 
-    void delete(Book book);
+    void delete(long id) throws BookNotFoundException;
 
-    void addComment(Book book, String commentText);
+    void addComment(long bookId, String commentText) throws BookNotFoundException;
 
-    Optional<Comment> getBookCommentByIndex(Book book, int commentIndex);
+    List<Comment> getBookComments(long bookId) throws BookNotFoundException;
 
-    List<Comment> getBookComments(Book book);
-
-    void removeComment(Book book, Comment comment);
+    void removeComment(long bookId, long commentId) throws BookNotFoundException, CommentNotFoundException;
 }
