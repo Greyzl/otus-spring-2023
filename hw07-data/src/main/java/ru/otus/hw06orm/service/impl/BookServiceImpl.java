@@ -42,21 +42,21 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public List<BookDto> getAll() {
-        return bookRepository.getAll().stream().map(bookDtoMapper::toDto).toList();
+        return bookRepository.findAll().stream().map(bookDtoMapper::toDto).toList();
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<BookDto> findByAuthorName(String authorName) throws AuthorNotFoundException{
         var author = authorService.findByName(authorName);
-        return bookRepository.findByAuthor(author).stream().map(bookDtoMapper::toDto).toList();
+        return bookRepository.findBookByAuthor(author).stream().map(bookDtoMapper::toDto).toList();
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<BookDto> findByGenreName(String genreName) throws GenreNotFoundException {
         var genre = genreService.getByName(genreName);
-        return bookRepository.findByGenre(genre).stream().map(bookDtoMapper::toDto).toList();
+        return bookRepository.findBookByGenre(genre).stream().map(bookDtoMapper::toDto).toList();
     }
 
     @Transactional(readOnly = true)
@@ -69,14 +69,14 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public BookDto findByTitle(String title) throws BookNotFoundException {
-        var book = bookRepository.findByTitle(title).orElseThrow(BookNotFoundException::new);
+        var book = bookRepository.findBookByTitle(title).orElseThrow(BookNotFoundException::new);
         return bookDtoMapper.toDto(book);
     }
 
     @Transactional
     @Override
     public BookDto add(String title, String authorName, String genreName) throws BookAlreadyExistsException {
-        var mayBeBook = bookRepository.findByTitle(title);
+        var mayBeBook = bookRepository.findBookByTitle(title);
         mayBeBook.ifPresent(book -> {
             throw new BookAlreadyExistsException(bookDtoMapper.toDto(book));
         });
@@ -117,6 +117,7 @@ public class BookServiceImpl implements BookService {
     public void addComment(long bookId, String commentText) throws BookNotFoundException {
         var book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
         Comment newComment = new Comment(commentText);
+        newComment.setBook(book);
         List<Comment> comments = book.getComments();
         comments.add(newComment);
         bookRepository.save(book);
@@ -125,8 +126,8 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public List<Comment> getBookComments(long bookId) throws BookNotFoundException {
-        bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
-        return bookRepository.getComments(bookId);
+        var book = bookRepository.findBookWithCommentsById(bookId).orElseThrow(BookNotFoundException::new);
+        return book.getComments();
     }
 
     @Transactional

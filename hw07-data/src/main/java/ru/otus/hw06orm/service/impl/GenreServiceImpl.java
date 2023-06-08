@@ -22,13 +22,13 @@ public class GenreServiceImpl implements GenreService {
     @Transactional(readOnly = true)
     @Override
     public List<Genre> getAll() {
-        return genreRepository.getAll();
+        return genreRepository.findAll();
     }
 
     @Transactional(readOnly = true)
     @Override
     public Genre get(long id) throws GenreNotFoundException{
-        return genreRepository.getById(id).orElseThrow(GenreNotFoundException::new);
+        return genreRepository.findById(id).orElseThrow(GenreNotFoundException::new);
     }
 
     @Transactional(readOnly = true)
@@ -50,7 +50,7 @@ public class GenreServiceImpl implements GenreService {
     @Transactional
     @Override
     public Genre add(String name) throws GenreAlreadyExistsException {
-        var isExists = genreRepository.isExists(name);
+        var isExists = genreRepository.existsByName(name);
         if (isExists){
             throw new GenreAlreadyExistsException();
         }
@@ -61,7 +61,7 @@ public class GenreServiceImpl implements GenreService {
     @Transactional
     @Override
     public Genre update(long id, String name) throws GenreNotFoundException {
-        var genre = genreRepository.getById(id).orElseThrow(GenreNotFoundException::new);
+        var genre = genreRepository.findById(id).orElseThrow(GenreNotFoundException::new);
         genre.setName(name);
         genreRepository.save(genre);
         return genre;
@@ -70,7 +70,7 @@ public class GenreServiceImpl implements GenreService {
     @Transactional
     @Override
     public void delete(long id) {
-        var genre = genreRepository.getById(id).orElseThrow(GenreNotFoundException::new);
+        var genre = genreRepository.findById(id).orElseThrow(GenreNotFoundException::new);
         genreRepository.delete(genre);
     }
 }

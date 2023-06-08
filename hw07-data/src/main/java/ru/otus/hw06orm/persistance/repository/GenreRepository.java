@@ -1,20 +1,13 @@
 package ru.otus.hw06orm.persistance.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import ru.otus.hw06orm.persistance.entity.Genre;
 
-import java.util.List;
 import java.util.Optional;
 
-public interface GenreRepository {
-    List<Genre> getAll();
-
-    Optional<Genre> getById(long id);
+public interface GenreRepository extends JpaRepository<Genre, Long> {
 
     Optional<Genre> findByName(String name);
 
-    Genre save(Genre genre);
-
-    void delete(Genre genre);
-
-    boolean isExists(String name);
+    boolean existsByName(String name);
 }

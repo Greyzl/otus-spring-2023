@@ -55,7 +55,7 @@ class BookServiceImplTest {
         books.add(book3);
         books.add(book4);
         books.add(book5);
-        Mockito.when(bookRepository.getAll()).thenReturn(books);
+        Mockito.when(bookRepository.findAll()).thenReturn(books);
 
         List<BookDto> booksDtoTested = bookService.getAll();
         assertEquals(5, booksDtoTested.size());
@@ -73,7 +73,7 @@ class BookServiceImplTest {
         List<Book> books = new ArrayList<>();
         books.add(book1);
         books.add(book2);
-        Mockito.when(bookRepository.getAll()).thenReturn(books);
+        Mockito.when(bookRepository.findAll()).thenReturn(books);
 
         List<BookDto> booksTested = bookService.getAll();
         var bookDto = booksTested.get(0);
@@ -100,7 +100,7 @@ class BookServiceImplTest {
 
         String authorName = "Test author 1";
         Mockito.when(authorService.findByName(authorName)).thenReturn(author1);
-        Mockito.when(bookRepository.findByAuthor(author1)).thenReturn(books);
+        Mockito.when(bookRepository.findBookByAuthor(author1)).thenReturn(books);
 
         List<BookDto> resultBookDtos = bookService.findByAuthorName(authorName);
         assertEquals(3, resultBookDtos.size());
@@ -119,7 +119,7 @@ class BookServiceImplTest {
 
         String authorName = "Test author 1";
         Mockito.when(authorService.findByName(authorName)).thenReturn(author1);
-        Mockito.when(bookRepository.findByAuthor(author1)).thenReturn(books);
+        Mockito.when(bookRepository.findBookByAuthor(author1)).thenReturn(books);
 
         List<BookDto> resultBookDtos = bookService.findByAuthorName(authorName);
         var bookDto = resultBookDtos.get(1);
@@ -151,7 +151,7 @@ class BookServiceImplTest {
 
         String genreName = "Test genre 1";
         Mockito.when(genreService.getByName(genreName)).thenReturn(genre1);
-        Mockito.when(bookRepository.findByGenre(genre1)).thenReturn(books);
+        Mockito.when(bookRepository.findBookByGenre(genre1)).thenReturn(books);
 
         List<BookDto> resultBookDtos = bookService.findByGenreName(genreName);
         assertEquals(2, resultBookDtos.size());
@@ -172,7 +172,7 @@ class BookServiceImplTest {
 
         String genreName = "Test genre 1";
         Mockito.when(genreService.getByName(genreName)).thenReturn(genre1);
-        Mockito.when(bookRepository.findByGenre(genre1)).thenReturn(books);
+        Mockito.when(bookRepository.findBookByGenre(genre1)).thenReturn(books);
 
         List<BookDto> resultBookDtos = bookService.findByGenreName(genreName);
         var bookDto = resultBookDtos.get(1);
@@ -221,7 +221,7 @@ class BookServiceImplTest {
         Book book1 = new Book(1, title, author1, genre1, new ArrayList<>());
         var optionalBook1 = Optional.of(book1);
 
-        Mockito.when(bookRepository.findByTitle(title)).thenReturn(optionalBook1);
+        Mockito.when(bookRepository.findBookByTitle(title)).thenReturn(optionalBook1);
 
         BookDto resultBookDto = bookService.findByTitle(title);
         assertEquals(1, resultBookDto.getId());
@@ -233,7 +233,7 @@ class BookServiceImplTest {
     @Test
     void givenFakeTitleWhenFindByTitleThenReturnBook() {
         String title = "Test book 1, author_1, genre_1";
-        Mockito.when(bookRepository.findByTitle(title)).thenReturn(Optional.empty());
+        Mockito.when(bookRepository.findBookByTitle(title)).thenReturn(Optional.empty());
         assertThrowsExactly(BookNotFoundException.class, () -> bookService.findByTitle(title));
     }
 
@@ -248,7 +248,7 @@ class BookServiceImplTest {
         var book1 = new Book(titleName, author1, genre1);
         var withId = new Book(1, titleName, author1, genre1, new ArrayList<>());
 
-        Mockito.when(bookRepository.findByTitle(titleName)).thenReturn(Optional.empty());
+        Mockito.when(bookRepository.findBookByTitle(titleName)).thenReturn(Optional.empty());
         Mockito.when(authorService.getOrCreate(authorName)).thenReturn(author1);
         Mockito.when(genreService.getOrCreate(genreName)).thenReturn(genre1);
         Mockito.when(bookRepository.save(book1)).thenReturn(withId);
@@ -265,7 +265,7 @@ class BookServiceImplTest {
     void givenExistsTitleWhenAddThenException(){
         String titleName = "Test book 1, author_1, genre_1";
         var withId = new Book(1, titleName, null, null, new ArrayList<>());
-        Mockito.when(bookRepository.findByTitle(titleName)).thenReturn(Optional.of(withId));
+        Mockito.when(bookRepository.findBookByTitle(titleName)).thenReturn(Optional.of(withId));
         assertThrowsExactly(BookAlreadyExistsException.class,
                 () -> bookService.add(titleName, "Petia", "Test"));
     }
@@ -286,7 +286,7 @@ class BookServiceImplTest {
         Author newAuthor = new Author(2, newAuthorName);
         Genre newGenre = new Genre(2, newGenreName);
         Book newBook = new Book(1, newTitleName, newAuthor, newGenre, new ArrayList<>());
-        Mockito.when(bookRepository.findById(1)).thenReturn(Optional.of(oldBook));
+        Mockito.when(bookRepository.findById(1L)).thenReturn(Optional.of(oldBook));
         Mockito.when(authorService.getOrCreate(newAuthorName)).thenReturn(newAuthor);
         Mockito.when(genreService.getOrCreate(newGenreName)).thenReturn(newGenre);
         Mockito.when(bookRepository.save(newBook)).thenReturn(newBook);

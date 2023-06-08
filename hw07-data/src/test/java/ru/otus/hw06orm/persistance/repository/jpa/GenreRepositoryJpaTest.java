@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.otus.hw06orm.persistance.entity.Genre;
+import ru.otus.hw06orm.persistance.repository.GenreRepository;
 
 import java.util.List;
 
@@ -14,24 +14,23 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@Import(GenreRepositoryJpa.class)
 class GenreRepositoryJpaTest {
 
     @Autowired
-    private GenreRepositoryJpa genreRepositoryJpa;
+    private GenreRepository genreRepository;
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Test
     void whenGetAllThenCorrectCount() {
-        List<Genre> authors = genreRepositoryJpa.getAll();
+        List<Genre> authors = genreRepository.findAll();
         assertEquals(3 ,authors.size());
     }
 
     @Test
     void whenGetAllThenGenreNameCorrect() {
-        var genres = genreRepositoryJpa.getAll();
+        var genres = genreRepository.findAll();
         var lastGenreIndex = genres.size() - 1;
         var lastGenre = genres.get(lastGenreIndex);
         assertEquals("test genre 3" ,lastGenre.getName());
@@ -39,37 +38,37 @@ class GenreRepositoryJpaTest {
 
     @Test
     void givenIdWhenGetByIdThenGenreNameCorrect() {
-        var genre = genreRepositoryJpa.getById(1).orElseThrow();
+        var genre = genreRepository.findById(1L).orElseThrow();
         assertEquals("test genre 1", genre.getName());
     }
 
     @Test
     void givenNameWhenFindByNameThenGenreNameCorrect() {
-        var genre = genreRepositoryJpa.findByName("test genre 1").orElseThrow();
+        var genre = genreRepository.findByName("test genre 1").orElseThrow();
         assertEquals("test genre 1", genre.getName());
     }
 
     @Test
     void givenGenreWithoutIdWhenSaveThenReturnGenreWithId() {
         Genre newGenre = new Genre("New Genre name");
-        var genreWithId = genreRepositoryJpa.save(newGenre);
+        var genreWithId = genreRepository.save(newGenre);
         assertEquals(4, genreWithId.getId());
 
         entityManager.detach(genreWithId);
 
-        var genreWithIdFromDb = genreRepositoryJpa.getById(4).orElseThrow();
+        var genreWithIdFromDb = genreRepository.findById(4L).orElseThrow();
         assertEquals("New Genre name", genreWithIdFromDb.getName());
     }
 
     @Test
     void givenAuthorWithIdWhenSaveThenNewNameCorrect() {
-        var genre = genreRepositoryJpa.getById(2).orElseThrow();
+        var genre = genreRepository.findById(2L).orElseThrow();
         genre.setName("New name genre 2");
-        var updatedGenre = genreRepositoryJpa.save(genre);
+        var updatedGenre = genreRepository.save(genre);
         entityManager.flush();
         entityManager.detach(updatedGenre);
 
-        var updatedGenreFromDb = genreRepositoryJpa.getById(2).orElseThrow();
+        var updatedGenreFromDb = genreRepository.findById(2L).orElseThrow();
 
         assertEquals("New name genre 2", updatedGenreFromDb.getName());
     }
@@ -77,22 +76,22 @@ class GenreRepositoryJpaTest {
 
     @Test
     void givenGenreWhenDeleteThenGenreNotFound() {
-        var genre = genreRepositoryJpa.getById(3).orElseThrow();
-        genreRepositoryJpa.delete(genre);
+        var genre = genreRepository.findById(3L).orElseThrow();
+        genreRepository.delete(genre);
         entityManager.flush();
         entityManager.detach(genre);
-        assertTrue(genreRepositoryJpa.getById(3).isEmpty());
+        assertTrue(genreRepository.findById(3L).isEmpty());
     }
 
     @Test
     void givenNameWhenIsExistsThenReturnTrue(){
-        boolean isExists = genreRepositoryJpa.isExists("test genre 2");
+        boolean isExists = genreRepository.existsByName("test genre 2");
         assertTrue(isExists);
     }
 
     @Test
     void givenFakeNameWhenIsExistsThenReturnFalse(){
-        boolean isExists = genreRepositoryJpa.isExists("test genre not exists");
+        boolean isExists = genreRepository.existsByName("test genre not exists");
         assertFalse(isExists);
     }
 }

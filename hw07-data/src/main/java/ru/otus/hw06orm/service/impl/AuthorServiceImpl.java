@@ -21,7 +21,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional(readOnly = true)
     public List<Author> getAll() {
-        return authorRepository.getAll();
+        return authorRepository.findAll();
     }
 
     @Transactional(readOnly = true)
@@ -46,7 +46,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     public Author add(String authorName) throws AuthorAlreadyExistsException{
-        var isExists = authorRepository.isExists(authorName);
+        var isExists = authorRepository.existsByName(authorName);
         if (isExists) {
             throw new AuthorAlreadyExistsException();
         }

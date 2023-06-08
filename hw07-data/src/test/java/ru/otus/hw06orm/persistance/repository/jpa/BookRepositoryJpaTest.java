@@ -4,11 +4,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
 import ru.otus.hw06orm.persistance.entity.Author;
 import ru.otus.hw06orm.persistance.entity.Book;
 import ru.otus.hw06orm.persistance.entity.Comment;
 import ru.otus.hw06orm.persistance.entity.Genre;
+import ru.otus.hw06orm.persistance.repository.BookRepository;
 
 import java.util.List;
 
@@ -16,24 +16,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
-@Import(BookRepositoryJPA.class)
 class BookRepositoryJpaTest {
 
     @Autowired
-    private BookRepositoryJPA bookRepositoryJPA;
+    private BookRepository bookRepository;
 
     @Autowired
     private TestEntityManager entityManager;
 
     @Test
     void whenGetAllThenReturnCorrectCount(){
-        List<Book> bookList = bookRepositoryJPA.getAll();
+        List<Book> bookList = bookRepository.findAll();
         assertEquals(6, bookList.size());
     }
 
     @Test
-    void whenGetAllThenReturnCorrectBookContent(){
-        List<Book> bookList = bookRepositoryJPA.getAll();
+    void whenFindAllThenReturnCorrectBookContent(){
+        List<Book> bookList = bookRepository.findAll();
         var book = bookList.get(1);
         var author = book.getAuthor();
         var genre = book.getGenre();
@@ -50,9 +49,9 @@ class BookRepositoryJpaTest {
     }
 
     @Test
-    void givenIdWhenGetByIdThenReturnBook() {
+    void givenIdWhenFindByIdThenReturnBook() {
 
-        var book = bookRepositoryJPA.findById(1).orElseThrow();
+        var book = bookRepository.findById(1L).orElseThrow();
         var author = book.getAuthor();
         var genre = book.getGenre();
         var comments = book.getComments();
@@ -68,9 +67,9 @@ class BookRepositoryJpaTest {
     }
 
     @Test
-    void givenTitleWhenFindByTitleThenReturnBook() {
+    void givenTitleWhenFindBookByTitleThenReturnBook() {
 
-        var book = bookRepositoryJPA.findByTitle("test title book 2").orElseThrow();
+        var book = bookRepository.findBookByTitle("test title book 2").orElseThrow();
         var author = book.getAuthor();
         var genre = book.getGenre();
         var comments = book.getComments();
@@ -92,11 +91,11 @@ class BookRepositoryJpaTest {
         Author author2 = new Author(2, "test author 2");
         Book newBook = new Book("new Test book title", author2, genre1);
 
-        Book insertedBook = bookRepositoryJPA.save(newBook);
+        Book insertedBook = bookRepository.save(newBook);
 
         entityManager.detach(insertedBook);
 
-        Book findedBook = bookRepositoryJPA.findById(7).orElseThrow();
+        Book findedBook = bookRepository.findById(7L).orElseThrow();
         var findedAuthor = findedBook.getAuthor();
         var findedGenre = findedBook.getGenre();
 
@@ -108,17 +107,17 @@ class BookRepositoryJpaTest {
 
     @Test
     void givenNewBookWithIdWhenSaveThenSaved() {
-        var book = bookRepositoryJPA.findById(1).orElseThrow();
+        var book = bookRepository.findById(1L).orElseThrow();
         var newAuthor = new Author(2, "test author 2");
         var newGenre = new Genre(2, "new Genre 2");
         book.setTitle("NewBook Title");
         book.setAuthor(newAuthor);
         book.setGenre(newGenre);
-        bookRepositoryJPA.save(book);
+        bookRepository.save(book);
         entityManager.flush();
         entityManager.detach(book);
 
-        Book resultBook = bookRepositoryJPA.findById(1).orElseThrow();
+        Book resultBook = bookRepository.findById(1L).orElseThrow();
         Author resultAuthor = resultBook.getAuthor();
         Genre resultGenre = resultBook.getGenre();
         List<Comment> resultComments = resultBook.getComments();
@@ -132,13 +131,13 @@ class BookRepositoryJpaTest {
     @Test
     void givenNewCommentWhenSaveThenSavedSuccessfully(){
         var newComment = new Comment("New comment test");
-        var book = bookRepositoryJPA.findById(1).orElseThrow();
+        var book = bookRepository.findById(1L).orElseThrow();
         newComment.setBook(book);
         book.getComments().add(newComment);
-        bookRepositoryJPA.save(book);
+        bookRepository.save(book);
         entityManager.detach(book);
 
-        var updatedBook = bookRepositoryJPA.findById(1).orElseThrow();
+        var updatedBook = bookRepository.findById(1L).orElseThrow();
         var comments = updatedBook.getComments();
         var lastComment = comments.get(comments.size() - 1);
 
@@ -148,26 +147,27 @@ class BookRepositoryJpaTest {
 
     @Test
     void givenRemovedCommentWhenSaveThenSavedSuccessfully(){
-        var book = bookRepositoryJPA.findById(1).orElseThrow();
+        var book = bookRepository.findById(1L).orElseThrow();
         var comments = book.getComments();
         assertEquals(2, comments.size());
         var comment = comments.get(0);
         comments.remove(comment);
         comment.setBook(null);
 
-        bookRepositoryJPA.save(book);
+        bookRepository.save(book);
         entityManager.flush();
         entityManager.detach(book);
 
-        var updatedBook = bookRepositoryJPA.findById(1).orElseThrow();
+        var updatedBook = bookRepository.findById(1L).orElseThrow();
         var updatedComments = updatedBook.getComments();
         assertEquals(1, updatedComments.size());
     }
 
     @Test
     void givenIdWhenDeleteThenDeleted() {
-        var book  = bookRepositoryJPA.findById(1).orElseThrow();
-        bookRepositoryJPA.delete(book);
-        assertTrue(bookRepositoryJPA.findById(1).isEmpty());
+        var book  = bookRepository.findById(1L).orElseThrow();
+        bookRepository.delete(book);
+        entityManager.flush();
+        assertTrue(bookRepository.findById(1L).isEmpty());
     }
 }

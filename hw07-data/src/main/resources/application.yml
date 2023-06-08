@@ -6,6 +6,7 @@ spring:
       mode: always
   jpa:
     generate-ddl: false
+#    show_sql: true
     hibernate:
       ddl-auto: none
 
