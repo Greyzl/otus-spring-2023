@@ -46,9 +46,10 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     public Author add(String authorName) throws AuthorAlreadyExistsException{
-        authorRepository.findByName(authorName).ifPresent((author) -> {
-            throw new AuthorAlreadyExistsException(author);
-        });
+        var isExists = authorRepository.isExists(authorName);
+        if (isExists) {
+            throw new AuthorAlreadyExistsException();
+        }
         Author newAuthor = new Author(authorName);
         return authorRepository.save(newAuthor);
     }

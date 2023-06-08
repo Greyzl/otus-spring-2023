@@ -56,4 +56,12 @@ public class GenreRepositoryJpa implements GenreRepository {
     public void delete(Genre genre) {
         entityManager.remove(genre);
     }
+
+    @Override
+    public boolean isExists(String name) {
+        return entityManager.createQuery(
+                        "select count(g)>0 from Genre g where g.name = :name", Boolean.class)
+                .setParameter("name", name)
+                .getSingleResult();
+    }
 }

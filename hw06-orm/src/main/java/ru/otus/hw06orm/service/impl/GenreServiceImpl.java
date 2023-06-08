@@ -50,10 +50,10 @@ public class GenreServiceImpl implements GenreService {
     @Transactional
     @Override
     public Genre add(String name) throws GenreAlreadyExistsException {
-        var mayBeGenre = genreRepository.findByName(name);
-        mayBeGenre.ifPresent(genre -> {
-            throw new GenreAlreadyExistsException(genre);
-        });
+        var isExists = genreRepository.isExists(name);
+        if (isExists){
+            throw new GenreAlreadyExistsException();
+        }
         Genre genre = new Genre(name);
         return genreRepository.save(genre);
     }

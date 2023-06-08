@@ -46,7 +46,7 @@ public class AuthorCommands {
             Author newAuthor = authorService.add(name);
             return "Author successfully saved. " + authorFormatter.format(newAuthor);
         } catch (AuthorAlreadyExistsException e){
-            return "Such author already exists." + authorFormatter.format(e.getAuthor());
+            return "Such author already exists.";
         }
     }
 

@@ -15,4 +15,6 @@ public interface GenreRepository {
     Genre save(Genre genre);
 
     void delete(Genre genre);
+
+    boolean isExists(String name);
 }

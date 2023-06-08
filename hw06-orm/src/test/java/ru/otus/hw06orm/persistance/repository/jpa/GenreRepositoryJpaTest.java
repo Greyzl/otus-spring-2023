@@ -10,6 +10,7 @@ import ru.otus.hw06orm.persistance.entity.Genre;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DataJpaTest
@@ -81,5 +82,17 @@ class GenreRepositoryJpaTest {
         entityManager.flush();
         entityManager.detach(genre);
         assertTrue(genreRepositoryJpa.getById(3).isEmpty());
+    }
+
+    @Test
+    void givenNameWhenIsExistsThenReturnTrue(){
+        boolean isExists = genreRepositoryJpa.isExists("test genre 2");
+        assertTrue(isExists);
+    }
+
+    @Test
+    void givenFakeNameWhenIsExistsThenReturnFalse(){
+        boolean isExists = genreRepositoryJpa.isExists("test genre not exists");
+        assertFalse(isExists);
     }
 }

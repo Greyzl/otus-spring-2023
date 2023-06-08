@@ -43,7 +43,7 @@ public class GenreCommands {
             Genre newGenre = genreService.add(name);
             return "Genre successfully added. " + genreFormatter.format(newGenre);
         } catch (GenreAlreadyExistsException e){
-            return "Such genre already exists. " + genreFormatter.format(e.getGenre());
+            return "Such genre already exists.";
         }
     }
 
