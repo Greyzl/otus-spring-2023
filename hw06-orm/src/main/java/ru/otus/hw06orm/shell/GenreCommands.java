@@ -57,7 +57,7 @@ public class GenreCommands {
         }
     }
 
-    @ShellMethod(value = "Update delete", key = {"genre-delete", "gd"})
+    @ShellMethod(value = "Delete genre", key = {"genre-delete", "gd"})
     public String deleteGenre(long id){
         try {
             genreService.delete(id);
