@@ -1,7 +1,7 @@
 package ru.otus.hw06orm.service;
 
 import ru.otus.hw06orm.dto.BookDto;
-import ru.otus.hw06orm.entity.Comment;
+import ru.otus.hw06orm.persistance.entity.Comment;
 import ru.otus.hw06orm.exception.AuthorNotFoundException;
 import ru.otus.hw06orm.exception.BookAlreadyExistsException;
 import ru.otus.hw06orm.exception.BookNotFoundException;

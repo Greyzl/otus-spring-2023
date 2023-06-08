@@ -1,9 +1,9 @@
 package ru.otus.hw06orm.persistance.repository;
 
-import ru.otus.hw06orm.entity.Author;
-import ru.otus.hw06orm.entity.Book;
-import ru.otus.hw06orm.entity.Comment;
-import ru.otus.hw06orm.entity.Genre;
+import ru.otus.hw06orm.persistance.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Book;
+import ru.otus.hw06orm.persistance.entity.Comment;
+import ru.otus.hw06orm.persistance.entity.Genre;
 
 import java.util.List;
 import java.util.Optional;

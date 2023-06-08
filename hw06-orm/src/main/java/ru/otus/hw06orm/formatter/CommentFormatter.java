@@ -1,6 +1,6 @@
 package ru.otus.hw06orm.formatter;
 
-import ru.otus.hw06orm.entity.Comment;
+import ru.otus.hw06orm.persistance.entity.Comment;
 
 import java.util.List;
 

@@ -100,7 +100,7 @@ public class BookCommands {
         }
     }
 
-    @ShellMethod(value = "Update author name", key = {"book-update", "bu"})
+    @ShellMethod(value = "Update book name, author name, genre name", key = {"book-update", "bu"})
     public String updateBook(@ShellOption({"-i", "--id"}) long id,
                              @ShellOption({"-t", "--title"}) String title,
                              @ShellOption(value = {"-a", "--author-name"},defaultValue = "") String authorName,
@@ -113,7 +113,7 @@ public class BookCommands {
         }
     }
 
-    @ShellMethod(value = "Delete author by id", key = {"book-delete", "bd"})
+    @ShellMethod(value = "Delete book by id. Author and genres won't be deleted", key = {"book-delete", "bd"})
     public String deleteBook(@ShellOption({"-i", "--id"}) long id){
         try {
             bookService.delete(id);

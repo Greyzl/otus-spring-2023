@@ -3,8 +3,8 @@ package ru.otus.hw06orm.service.impl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.otus.hw06orm.dto.BookDto;
-import ru.otus.hw06orm.entity.Book;
-import ru.otus.hw06orm.entity.Comment;
+import ru.otus.hw06orm.persistance.entity.Book;
+import ru.otus.hw06orm.persistance.entity.Comment;
 import ru.otus.hw06orm.exception.AuthorNotFoundException;
 import ru.otus.hw06orm.exception.BookAlreadyExistsException;
 import ru.otus.hw06orm.exception.BookNotFoundException;
@@ -125,7 +125,7 @@ public class BookServiceImpl implements BookService {
     @Transactional(readOnly = true)
     @Override
     public List<Comment> getBookComments(long bookId) throws BookNotFoundException {
-        var book = bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
+        bookRepository.findById(bookId).orElseThrow(BookNotFoundException::new);
         return bookRepository.getComments(bookId);
     }
 

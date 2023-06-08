@@ -2,7 +2,7 @@ package ru.otus.hw06orm.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw06orm.entity.Genre;
+import ru.otus.hw06orm.persistance.entity.Genre;
 import ru.otus.hw06orm.exception.GenreAlreadyExistsException;
 import ru.otus.hw06orm.exception.GenreNotFoundException;
 import ru.otus.hw06orm.persistance.repository.GenreRepository;

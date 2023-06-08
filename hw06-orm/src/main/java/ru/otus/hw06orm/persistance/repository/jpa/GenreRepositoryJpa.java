@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import ru.otus.hw06orm.entity.Genre;
+import ru.otus.hw06orm.persistance.entity.Genre;
 import ru.otus.hw06orm.persistance.repository.GenreRepository;
 
 import java.util.List;

@@ -4,7 +4,7 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import ru.otus.hw06orm.exception.AuthorAlreadyExistsException;
 import ru.otus.hw06orm.exception.AuthorNotFoundException;
-import ru.otus.hw06orm.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Author;
 import ru.otus.hw06orm.formatter.AuthorFormatter;
 import ru.otus.hw06orm.service.AuthorService;
 

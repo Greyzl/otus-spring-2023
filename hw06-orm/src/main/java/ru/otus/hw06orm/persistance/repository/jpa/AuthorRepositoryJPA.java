@@ -4,7 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import ru.otus.hw06orm.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Author;
 import ru.otus.hw06orm.persistance.repository.AuthorRepository;
 
 import java.util.List;
@@ -56,5 +56,13 @@ public class AuthorRepositoryJPA implements AuthorRepository {
     @Override
     public void delete(Author author) {
         entityManager.remove(author);
+    }
+
+    @Override
+    public boolean isExists(String name) {
+        return entityManager.createQuery(
+                "select count(a)>0 from Author a where a.name = :name", Boolean.class)
+                .setParameter("name", name)
+                .getSingleResult();
     }
 }

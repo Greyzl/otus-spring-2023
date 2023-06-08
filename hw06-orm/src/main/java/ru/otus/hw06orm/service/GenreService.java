@@ -1,6 +1,6 @@
 package ru.otus.hw06orm.service;
 
-import ru.otus.hw06orm.entity.Genre;
+import ru.otus.hw06orm.persistance.entity.Genre;
 import ru.otus.hw06orm.exception.GenreAlreadyExistsException;
 import ru.otus.hw06orm.exception.GenreNotFoundException;
 

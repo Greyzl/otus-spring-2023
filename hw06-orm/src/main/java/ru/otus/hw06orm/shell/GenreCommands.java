@@ -2,7 +2,7 @@ package ru.otus.hw06orm.shell;
 
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.hw06orm.entity.Genre;
+import ru.otus.hw06orm.persistance.entity.Genre;
 import ru.otus.hw06orm.exception.GenreAlreadyExistsException;
 import ru.otus.hw06orm.exception.GenreNotFoundException;
 import ru.otus.hw06orm.formatter.GenreFormatter;

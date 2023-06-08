@@ -1,6 +1,6 @@
 package ru.otus.hw06orm.service;
 
-import ru.otus.hw06orm.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Author;
 import ru.otus.hw06orm.exception.AuthorAlreadyExistsException;
 import ru.otus.hw06orm.exception.AuthorNotFoundException;
 

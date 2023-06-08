@@ -2,7 +2,7 @@ package ru.otus.hw06orm.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw06orm.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Author;
 import ru.otus.hw06orm.exception.AuthorAlreadyExistsException;
 import ru.otus.hw06orm.exception.AuthorNotFoundException;
 import ru.otus.hw06orm.persistance.repository.AuthorRepository;

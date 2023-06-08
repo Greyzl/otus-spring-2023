@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import ru.otus.hw06orm.dto.BookDto;
-import ru.otus.hw06orm.entity.Author;
-import ru.otus.hw06orm.entity.Book;
-import ru.otus.hw06orm.entity.Genre;
+import ru.otus.hw06orm.persistance.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Book;
+import ru.otus.hw06orm.persistance.entity.Genre;
 import ru.otus.hw06orm.exception.AuthorNotFoundException;
 import ru.otus.hw06orm.exception.BookAlreadyExistsException;
 import ru.otus.hw06orm.exception.BookNotFoundException;
@@ -283,18 +283,14 @@ class BookServiceImplTest {
         Author oldAuthor = new Author(1, oldAuthorName);
         Genre oldGenre = new Genre(1, oldGenreName);
         Book oldBook = new Book(1, oldTitleName, oldAuthor, oldGenre, new ArrayList<>());
-
         Author newAuthor = new Author(2, newAuthorName);
         Genre newGenre = new Genre(2, newGenreName);
         Book newBook = new Book(1, newTitleName, newAuthor, newGenre, new ArrayList<>());
-
         Mockito.when(bookRepository.findById(1)).thenReturn(Optional.of(oldBook));
         Mockito.when(authorService.getOrCreate(newAuthorName)).thenReturn(newAuthor);
         Mockito.when(genreService.getOrCreate(newGenreName)).thenReturn(newGenre);
         Mockito.when(bookRepository.save(newBook)).thenReturn(newBook);
-
         BookDto updatedBookDto = bookService.update(1,newTitleName, newAuthorName, newGenreName);
-
         assertEquals(1, updatedBookDto.getId());
         assertEquals("Test book 2, author_2, genre_2", updatedBookDto.getTitle());
         assertEquals("Test author 2", updatedBookDto.getAuthorName());

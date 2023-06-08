@@ -3,10 +3,10 @@ package ru.otus.hw06orm.persistance.repository.jpa;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
-import ru.otus.hw06orm.entity.Author;
-import ru.otus.hw06orm.entity.Book;
-import ru.otus.hw06orm.entity.Comment;
-import ru.otus.hw06orm.entity.Genre;
+import ru.otus.hw06orm.persistance.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Book;
+import ru.otus.hw06orm.persistance.entity.Comment;
+import ru.otus.hw06orm.persistance.entity.Genre;
 import ru.otus.hw06orm.persistance.repository.BookRepository;
 
 import java.util.List;

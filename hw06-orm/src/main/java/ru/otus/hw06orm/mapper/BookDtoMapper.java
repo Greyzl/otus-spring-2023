@@ -2,9 +2,9 @@ package ru.otus.hw06orm.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.otus.hw06orm.dto.BookDto;
-import ru.otus.hw06orm.entity.Author;
-import ru.otus.hw06orm.entity.Book;
-import ru.otus.hw06orm.entity.Genre;
+import ru.otus.hw06orm.persistance.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Book;
+import ru.otus.hw06orm.persistance.entity.Genre;
 
 @Component
 public class BookDtoMapper {

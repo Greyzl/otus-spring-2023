@@ -1,4 +1,4 @@
-package ru.otus.hw06orm.entity;
+package ru.otus.hw06orm.persistance.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

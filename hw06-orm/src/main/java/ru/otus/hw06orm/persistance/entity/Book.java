@@ -1,4 +1,4 @@
-package ru.otus.hw06orm.entity;
+package ru.otus.hw06orm.persistance.entity;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,13 +27,14 @@ public class Book {
     private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "AUTHOR_ID")
     private Author author;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "GENRE_ID")
     private Genre genre;
 
-    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "BOOK_ID")
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public Book(){

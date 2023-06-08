@@ -5,12 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
-import ru.otus.hw06orm.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Author;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DataJpaTest
 @Import(AuthorRepositoryJPA.class)
@@ -81,5 +82,17 @@ class AuthorRepositoryJPATest {
         entityManager.flush();
         entityManager.detach(author);
         assertTrue(authorRepositoryJPA.findById(5).isEmpty());
+    }
+
+    @Test
+    void givenNameWhenIsExistsThenReturnTrue(){
+        boolean isExists = authorRepositoryJPA.isExists("test author 3");
+        assertTrue(isExists);
+    }
+
+    @Test
+    void givenFakeNameWhenIsExistsThenReturnFalse(){
+        boolean isExists = authorRepositoryJPA.isExists("test author not exists");
+        assertFalse(isExists);
     }
 }

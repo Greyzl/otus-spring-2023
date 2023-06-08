@@ -1,6 +1,6 @@
 package ru.otus.hw06orm.exception;
 
-import ru.otus.hw06orm.entity.Author;
+import ru.otus.hw06orm.persistance.entity.Author;
 
 public class AuthorAlreadyExistsException extends RuntimeException{
     private final Author author;
