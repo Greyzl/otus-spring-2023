@@ -1,0 +1,30 @@
+spring:
+  data:
+    mongodb:
+      port: 0 # when flapdoodle using
+      database: library
+  shell:
+    command:
+      version:
+        enabled: false
+
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+
+mongock:
+  migration-scan-package:
+    - ru.otus.hw06orm.changelog
+  enabled: true
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+#  h2:
+#    console:
+#      path: /h2-console
+#      settings:
+#        web-allow-others: false

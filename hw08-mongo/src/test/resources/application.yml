@@ -1,0 +1,25 @@
+spring:
+  data:
+    mongodb:
+      port: 0 # when flapdoodle using
+      database: test
+  shell:
+    command:
+      version:
+        enabled: false
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+mongock:
+  runner-type: none
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+  migration-scan-package:
+    - ru.otus.hw08mongo.changelog
+  enabled: true
+
+
