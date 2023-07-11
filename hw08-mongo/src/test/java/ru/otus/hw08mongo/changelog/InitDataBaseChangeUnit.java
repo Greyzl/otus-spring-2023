@@ -12,11 +12,11 @@ import ru.otus.hw08mongo.persistance.entity.Genre;
 import java.util.List;
 
 @ChangeUnit(id = "Init database", author = "Shilkov S.S.", order = "1")
-public class InitDataBaseChange {
+public class InitDataBaseChangeUnit {
 
     private final MongoTemplate mongoTemplate;
 
-    public InitDataBaseChange(MongoTemplate mongoTemplate) {
+    public InitDataBaseChangeUnit(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
     }
 
