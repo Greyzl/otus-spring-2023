@@ -1,0 +1,22 @@
+spring:
+  data:
+    mongodb:
+      port: 0 # when flapdoodle using
+      database: library
+  shell:
+    command:
+      version:
+        enabled: false
+
+
+de:
+  flapdoodle:
+    mongodb:
+      embedded:
+        version: 4.0.2
+
+#  h2:
+#    console:
+#      path: /h2-console
+#      settings:
+#        web-allow-others: false
